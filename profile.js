@@ -10,7 +10,7 @@
   if (!btn) return;
   var API = (window.JC_API) || 'http://localhost:3000';
 
-  var nome = 'Rodrigo Dantas', mail = 'ceo@jcsolar.com', foto = '';
+  var nome = 'João Carlos', mail = 'ceo@jcsolar.com', foto = '';
   try { var u = JSON.parse(localStorage.getItem('jc_user') || 'null'); if (u) { nome = u.nome || u.name || nome; mail = u.email || mail; foto = u.foto || ''; } } catch (e) { /* noop */ }
 
   function iniciais(n) { return n.trim().split(/\s+/).map(function (w) { return w.charAt(0); }).join('').slice(0, 2).toUpperCase(); }

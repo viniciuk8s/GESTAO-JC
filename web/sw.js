@@ -4,7 +4,7 @@
  * - NUNCA cacheia a API (:3000, origem diferente): sempre rede
  * - clique na notificação foca/abre a tela certa
  */
-const CACHE = 'jc-gestao-1786972943';
+const CACHE = 'jc-gestao-1786975735';
 const CORE = ['./css/app.css', './img/icon-192.png', './img/logo.png'];
 
 self.addEventListener('install', (e) => {

@@ -53,7 +53,7 @@ HOME_BODY = """
   __TOPBAR__
     <div class="content va">
       <div class="page-head">
-        <div><h1><span class="greet-hi">Olá</span>, Rodrigo</h1><p>Resumo do seu negócio</p></div>
+        <div><h1><span class="greet-hi">Olá</span>, João Carlos</h1><p>Resumo do seu negócio</p></div>
         <div class="ph-actions"></div>
       </div>
 
@@ -809,7 +809,7 @@ LOGIN_BODY = """
     <h1>Criar conta</h1>
     <p class="sub">O acesso é liberado pelo TI após a sua solicitação</p>
     <div class="auth-erro" id="sg-erro" hidden></div>
-    <div class="auth-field"><label>Nome completo</label><input id="sg-nome" type="text" autocomplete="name" placeholder="Ex.: Rodrigo Dantas"></div>
+    <div class="auth-field"><label>Nome completo</label><input id="sg-nome" type="text" autocomplete="name" placeholder="Ex.: João Carlos"></div>
     <div class="auth-field"><label>E-mail</label><input id="sg-email" type="email" inputmode="email" autocomplete="email" placeholder="voce@empresa.com"></div>
     <div class="auth-field"><label>Senha</label><div class="pw-wrap"><input id="sg-senha" type="password" autocomplete="new-password" placeholder="Mínimo de 6 caracteres"><button type="button" class="pw-eye" id="sg-eye" aria-label="Mostrar senha"><iconify-icon icon="ion:eye-outline"></iconify-icon></button></div></div>
     <button class="btn btn-primary auth-btn" id="sg-enviar">__IC_userplus__ Criar conta</button>

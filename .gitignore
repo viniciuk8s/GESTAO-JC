@@ -1,19 +1,11 @@
 # Dependências
 node_modules/
 
-# Segredos — NUNCA versionar
-.env
-.env.*
-!.env.example
-
 # Banco embarcado (PGlite) — gerado em runtime
 logica-ts/data/
 
-# Uploads em runtime (documentos/fotos reais enviados por usuários)
-logica-ts/uploads/
-
-# Bundles intermediários da API (o resultado final já fica em web/js via build_site.py)
-logica-ts/dist/
+# Uploads em runtime (mantém apenas os exemplos versionados, se houver)
+# logica-ts/uploads/
 
 # Sass / mapas
 .sass-cache/
@@ -23,3 +15,9 @@ logica-ts/dist/
 .DS_Store
 Thumbs.db
 *.log
+
+
+
+73f7b894e7fbbb0b1b992047b9cc802e
+
+gestao-jc-tan.vercel.app

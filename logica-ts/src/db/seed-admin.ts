@@ -24,7 +24,7 @@ async function upsert(nome: string, email: string, senha: string): Promise<void>
 
 async function main(): Promise<void> {
   await initDb();
-  await upsert(process.env.CEO_NOME || 'Rodrigo Dantas', process.env.CEO_EMAIL || 'ceo@jcsolar.com', process.env.CEO_SENHA || 'ceo123');
+  await upsert(process.env.CEO_NOME || 'João Carlos', process.env.CEO_EMAIL || 'ceo@jcsolar.com', process.env.CEO_SENHA || 'ceo123');
   await upsert(process.env.TI_NOME || 'TI — JC Elétrica & Solar', process.env.TI_EMAIL || 'ti@jcsolar.com', process.env.TI_SENHA || 'ti123');
   process.exit(0);
 }
