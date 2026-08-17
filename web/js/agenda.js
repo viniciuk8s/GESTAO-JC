@@ -185,14 +185,19 @@ var Agenda = (() => {
 
   // src/web.ts
   var API_BASE2 = window.JC_API || "http://localhost:3000";
-  var HOJE = "2026-07-22";
+  var pad2 = (n) => String(n).padStart(2, "0");
+  function dataHojeIso() {
+    const d = /* @__PURE__ */ new Date();
+    return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+  }
+  var HOJE = dataHojeIso();
   var WD_LONGO = ["Domingo", "Segunda", "Ter\xE7a", "Quarta", "Quinta", "Sexta", "S\xE1bado"];
   var WD_CURTO = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
   var MESES = ["janeiro", "fevereiro", "mar\xE7o", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-  var anoAtual = 2026;
-  var mesAtual = 6;
-  var semanaRef = new Date(2026, 6, 22);
-  var pad2 = (n) => String(n).padStart(2, "0");
+  var _hojeParts = /* @__PURE__ */ new Date();
+  var anoAtual = _hojeParts.getFullYear();
+  var mesAtual = _hojeParts.getMonth();
+  var semanaRef = new Date(_hojeParts.getFullYear(), _hojeParts.getMonth(), _hojeParts.getDate());
   function iso(ano, mes0, dia) {
     return `${ano}-${pad2(mes0 + 1)}-${pad2(dia)}`;
   }
