@@ -1,0 +1,176 @@
+<!doctype html><html lang="pt-BR" data-theme="dark"><head><script src="js/mov-1.init.js" defer></script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>JC Gestão — Movimentações</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#091128"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="JC Gestão"><link rel="apple-touch-icon" href="img/icon-192.png"><link rel="stylesheet" href="css/app.css"><style>
+/* avatar do usuário com foto (cartão do menu) + botão sair */
+.user-card .avatar.foto{ padding:0; overflow:hidden; }
+.user-card .avatar.foto img{ width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block; }
+.user-card .uicon{ cursor:pointer; }
+/* ===== tela de login ===== */
+.auth-wrap{ position:relative; overflow:hidden; min-height:100vh; min-height:100dvh; display:grid; place-items:center; padding:24px;
+  background:radial-gradient(1100px 520px at 50% -14%, rgba(192, 68, 42,.12), transparent 60%), var(--bg,#0c0e13); }
+.auth-wave{ position:absolute; left:50%; bottom:-4%; transform:translateX(-50%); width:min(1100px,150%); max-width:none; opacity:.55; pointer-events:none; z-index:0; }
+.auth-card{ position:relative; z-index:1; width:100%; max-width:404px; background:var(--card,#151821); border:1px solid var(--line,#232838);
+  border-radius:20px; padding:30px 26px; box-shadow:none; }
+.auth-logo{ display:flex; justify-content:center; margin-bottom:14px; }
+.auth-logo img{ height:46px; }
+.auth-card h1{ font-family:var(--font-head,'Inter',sans-serif); font-size:22px; text-align:center; margin:2px 0 4px; color:var(--txt,#fff); }
+.auth-card .sub{ text-align:center; color:var(--mut,#98a1b3); font-size:13.5px; margin:0 0 20px; }
+.auth-field{ margin-bottom:14px; }
+.auth-field label{ display:block; font-size:12.5px; color:var(--mut,#98a1b3); margin-bottom:6px; font-weight:600; }
+.auth-field input, .auth-field textarea{ width:100%; box-sizing:border-box; background:var(--bg,#0c0e13);
+  border:1px solid var(--line,#232838); border-radius:12px; padding:12px 14px; color:var(--txt,#fff); font-size:15px; font-family:inherit; }
+.auth-field input:focus, .auth-field textarea:focus{ outline:none; border-color:var(--accent,#ef6300); }
+.auth-btn{ width:100%; justify-content:center; margin-top:6px; font-size:15px; padding:13px; }
+.auth-alt{ text-align:center; margin-top:16px; font-size:13.5px; color:var(--mut,#98a1b3); }
+.auth-alt a{ color:var(--accent-2,#ff8a3d); font-weight:600; cursor:pointer; text-decoration:none; }
+.auth-erro{ background:rgba(248,113,113,.12); border:1px solid rgba(248,113,113,.4); color:#fca5a5;
+  border-radius:10px; padding:10px 12px; font-size:13px; margin-bottom:14px; }
+.auth-ok{ text-align:center; padding:12px 4px; }
+.auth-ok .okic{ font-size:46px; color:#34d399; }
+.auth-ok h2{ font-family:var(--font-head,'Inter',sans-serif); font-size:19px; margin:10px 0 6px; color:var(--txt,#fff); }
+.auth-ok p{ color:var(--mut,#98a1b3); font-size:14px; margin:0 0 16px; line-height:1.5; }
+.auth-btn{ border-radius:14px; }
+.auth-card[hidden]{ display:none !important; }
+/* mostrar/ocultar senha */
+.pw-wrap{ position:relative; }
+.pw-wrap input{ padding-right:48px; }
+.pw-eye{ position:absolute; right:6px; top:50%; transform:translateY(-50%); width:36px; height:36px; display:grid; place-items:center;
+  background:none; border:0; color:var(--mut,#98a1b3); cursor:pointer; border-radius:10px; font-size:20px; }
+.pw-eye:active{ background:rgba(255,255,255,.06); }
+.auth-hint{ text-align:center; color:var(--dim,#6e7896); font-size:12px; margin-top:20px; }
+/* ---- mobile: login em tela cheia, com cara de app ---- */
+@media (max-width:640px){
+  .auth-wrap{ padding:0; place-items:stretch; }
+  .auth-card{ max-width:none; min-height:100dvh; border:0; border-radius:0; box-shadow:none; background:transparent;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:26px 22px calc(30px + env(safe-area-inset-bottom,0)); padding-top:calc(46px + env(safe-area-inset-top,0)); }
+  .auth-logo{ margin-bottom:22px; }
+  .auth-logo img{ height:56px; }
+  .auth-card h1{ font-size:27px; }
+  .auth-card .sub{ font-size:14px; margin-bottom:26px; }
+  .auth-field{ margin-bottom:16px; }
+  .auth-field label{ font-size:13px; }
+  .auth-field input{ font-size:16px; padding:15px 16px; border-radius:14px; min-height:54px; }
+  .pw-wrap input{ padding-right:52px; }
+  .auth-btn{ padding:16px; font-size:16px; min-height:56px; margin-top:10px; }
+  .auth-wave{ opacity:.4; bottom:-2%; }
+}
+</style><script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.min.js"></script><script data-nav>(function(){try{var h=document.documentElement,d=sessionStorage.getItem('jc-force-dir');if(d){sessionStorage.removeItem('jc-force-dir')}var s=history.state||{},i=s.jcIdx;if(typeof i!=='number'){i=(+sessionStorage.getItem('jcIdx')||0)+1;history.replaceState(Object.assign({},s,{jcIdx:i}),'')}var p=+sessionStorage.getItem('jcIdx')||0;var back=d?d==='back':i<p;h.classList.add(back?'nav-back':'nav-fwd');sessionStorage.setItem('jcIdx',i)}catch(e){document.documentElement.classList.add('nav-fwd')}})()</script></head><body><script src="js/auth.js" defer></script><script src="js/enhance.js" defer></script><script src="js/notif.js" defer></script>
+<div class="drawer-overlay"></div>
+<div class="app">
+  <aside class="sidebar"><div class="sb-head"><a href="home.html"><img class="sb-logo" src="img/logo-dark.png" alt="JC Elétrica & Solar"></a></div><nav class="sb-nav"><div class="nav-sec">Geral</div><a class="nav-item" href="home.html"><span class="ic"><iconify-icon icon="ion:grid-outline"></iconify-icon></span>Início</a><div class="nav-sec">Módulos</div><a class="nav-item active" href="movimentacoes.html"><span class="ic"><iconify-icon icon="ion:wallet-outline"></iconify-icon></span>Movimentações<span class="badge">3</span></a><a class="nav-item" href="agendamentos.html"><span class="ic"><iconify-icon icon="ion:calendar-outline"></iconify-icon></span>Agendamentos</a><a class="nav-item" href="relatorios.html"><span class="ic"><iconify-icon icon="ion:bar-chart-outline"></iconify-icon></span>Relatórios</a><a class="nav-item" href="comparativo.html"><span class="ic"><iconify-icon icon="ion:trending-up-outline"></iconify-icon></span>Comparativo</a><a class="nav-item" href="evolucao.html"><span class="ic"><iconify-icon icon="ion:analytics-outline"></iconify-icon></span>Evolução</a><div class="nav-sec">Gestão</div><a class="nav-item" href="colaboradores.html"><span class="ic"><iconify-icon icon="ion:people-outline"></iconify-icon></span>Colaboradores</a><a class="nav-item" href="dias-trabalhados.html"><span class="ic"><iconify-icon icon="ion:calendar-number-outline"></iconify-icon></span>Dias trabalhados</a><a class="nav-item" href="projetos.html"><span class="ic"><iconify-icon icon="ion:construct-outline"></iconify-icon></span>Projetos</a></nav></aside><nav class="mtabs" aria-label="Navegação"><a class="mtab" href="home.html"><span class="mti"><iconify-icon icon="ion:grid-outline"></iconify-icon></span><span class="mtl">Início</span></a><a class="mtab active" href="movimentacoes.html"><span class="mti"><iconify-icon icon="ion:wallet-outline"></iconify-icon></span><span class="mtl">Financeiro</span></a><a class="mtab" href="agendamentos.html"><span class="mti"><iconify-icon icon="ion:calendar-outline"></iconify-icon></span><span class="mtl">Agenda</span></a><a class="mtab" href="relatorios.html"><span class="mti"><iconify-icon icon="ion:bar-chart-outline"></iconify-icon></span><span class="mtl">Relatórios</span></a></nav><script src="js/mov-2.init.js" defer></script>
+  <div class="main">
+  
+    <header class="topbar">
+      <button class="icon-btn menu-btn" aria-label="Menu"><iconify-icon icon="ion:menu-outline"></iconify-icon></button>
+      <div class="ptitle">Movimentações</div>
+      <div class="spacer"></div>
+      <button class="icon-btn theme-btn" id="theme-btn" aria-label="Alternar tema"><iconify-icon icon="ion:moon-outline"></iconify-icon></button>
+      <button class="icon-btn bell" aria-label="Notificações"><iconify-icon icon="ion:notifications-outline"></iconify-icon></button>
+      <button class="pf-btn" id="pf-btn" aria-label="Perfil"><span class="pf-av">RD</span></button>
+      <span class="brand-top"><img class="atom" src="img/atom-dark.png" alt="JC"></span>
+    </header>
+    <div class="content va">
+      <div class="page-head">
+        <div><h1>Movimentações</h1><p>Tudo que entra e sai do seu caixa</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-ghost" data-open="export"><iconify-icon icon="ion:download-outline"></iconify-icon> Exportar</button>
+          <button class="btn btn-primary" data-open="novo"><iconify-icon icon="ion:add-outline"></iconify-icon> Nova entrada ou saída</button>
+        </div>
+      </div>
+
+      <!-- HERO: saldo ao vivo + gráfico de fluxo -->
+      <div class="tile hero-tile">
+        <div class="hero-info">
+          <div class="hero-top"><small>Resultado no período</small><span class="live-badge" id="live-badge"><i></i> ao vivo</span></div>
+          <div class="hero-val" id="mov-hero-val">R$ —</div>
+          <div class="hero-sub" id="mov-hero-sub">os números aparecem quando o sistema estiver ligado</div>
+          
+        </div>
+        <div class="hero-chart" id="mov-flow"></div>
+      </div>
+
+      <!-- KPI tiles (entradas / saídas / saldo) -->
+      <div class="sumrow" id="mov-sum"></div>
+
+      <!-- Entradas x Saídas por dia -->
+      <div class="tile"><div class="tile-h">Entrou e saiu, por dia <span class="tile-meta">o dia a dia do caixa</span></div><div id="mov-bars"></div></div>
+
+      <!-- Gauge (margem, com contexto) + Donut (categorias, com legenda) -->
+      <div class="va-grid2">
+        <div class="tile"><div class="tile-h">Quanto sobra de lucro <span class="tile-meta">do que entra, quanto vira lucro</span></div><div class="chart-box" id="mov-gauge"></div><div class="legend"><span class="lg-note">quanto maior, mais sobra de lucro</span></div><div class="gauge-sub" id="mov-gauge-sub"></div></div>
+        <div class="tile"><div class="tile-h">Onde o dinheiro foi gasto <span class="tile-meta">gastos do mês</span></div><div class="chart-box" id="mov-donut"></div><div class="legend"><span class="lg-note">cada cor é um tipo de gasto</span></div><div class="donut-leg" id="mov-donut-leg"></div></div>
+      </div>
+
+      <!-- KPIs analíticos -->
+      <div class="dash-kpis" id="mov-kpis"></div>
+
+      <!-- Entradas e saídas ao vivo (com CRUD) -->
+      <div class="tile list-tile">
+        <div class="tile-h">Entradas e saídas <span class="tile-meta" id="mov-updated"></span></div>
+        <div class="filters">
+          <div class="search"><iconify-icon icon="ion:search-outline"></iconify-icon><input placeholder="Buscar lançamento..."></div>
+          <div class="chips"><span class="chipf on" data-tipo="">Todos</span><span class="chipf" data-tipo="entrada">Entradas</span><span class="chipf" data-tipo="saida">Saídas</span></div>
+        </div>
+        <section id="mov-list"></section>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="fab" data-open="novo" aria-label="Nova entrada ou saída"><iconify-icon icon="ion:add-outline"></iconify-icon></button>
+<div class="modal-wrap" id="m-detail"><div class="modal">
+  <div class="modal-head"><h3>Detalhes do movimento</h3><button class="mclose">&times;</button></div>
+  <div class="modal-body" id="det-rows"></div>
+  <div class="modal-foot"><button class="btn btn-ghost danger" id="det-del"><iconify-icon icon="ion:trash-outline"></iconify-icon> Excluir</button><button class="btn btn-primary" id="det-edit"><iconify-icon icon="ion:create-outline"></iconify-icon> Editar</button></div>
+</div></div>
+
+<div class="modal-wrap" id="m-novo"><div class="modal modal-lg">
+  <div class="modal-head"><h3 id="mnovo-title">Nova entrada ou saída</h3><button class="mclose">&times;</button></div>
+  <div class="modal-body">
+    <div class="f-erros" id="mov-erro" hidden></div>
+    <div class="wizard" data-wizard>
+      <div class="wz-head"><div class="wz-dots"><i></i><i></i><i></i></div><div class="wz-label"><span class="wz-name">Valor</span> · <b class="wz-cur">1</b>/<span class="wz-total">3</span></div></div>
+      <div class="wz-track">
+        <section class="wz-step on" data-name="Valor">
+          <div class="seg"><button class="seg-btn on in" data-tipo="entrada"><iconify-icon icon="ion:arrow-down-outline"></iconify-icon> Entrada</button><button class="seg-btn out" data-tipo="saida"><iconify-icon icon="ion:arrow-up-outline"></iconify-icon> Saída</button></div>
+          <label class="fl">Valor</label>
+          <div class="money-input"><span>R$</span><input id="mov-valor" inputmode="decimal" placeholder="0,00" required></div>
+        </section>
+        <section class="wz-step" data-name="Detalhes">
+          <div class="form-grid">
+            <div class="field span2"><label>Descrição</label><input class="inp" id="mov-desc" placeholder="Ex.: Instalação solar — Cond. Vila Verde" required></div>
+            <div class="field"><label>Categoria</label><div class="selwrap"><select class="selnat" id="mov-cat"><option>Serviços</option><option>Fornecedores</option><option>Folha de pagamento</option><option>Instalações</option><option>Impostos</option><option>Gasolina</option><option>Almoço</option><option>Outros</option></select><iconify-icon icon="ion:chevron-down-outline"></iconify-icon></div><input class="inp mov-outro" id="mov-cat-outro" placeholder="Digite a categoria" maxlength="40" hidden></div>
+            <div class="field span2"><label>Forma de pagamento</label><div class="selwrap"><select class="selnat" id="mov-forma"><option value="pix">Pix</option><option value="transferencia">Transferência</option><option value="boleto">Boleto</option><option value="cartao">Cartão</option><option value="dinheiro">Dinheiro</option></select><iconify-icon icon="ion:chevron-down-outline"></iconify-icon></div></div>
+          </div>
+        </section>
+        <section class="wz-step" data-name="Quando">
+          <div class="form-grid">
+            <div class="field"><label>Data</label><input type="date" class="inp" id="mov-data"></div>
+            <div class="field"><label>Situação</label><div class="selwrap"><select class="selnat" id="mov-situacao"><option value="pago">Pago</option><option value="pendente">Pendente</option><option value="agendado">Agendado</option></select><iconify-icon icon="ion:chevron-down-outline"></iconify-icon></div></div>
+          </div>
+          <label class="check"><span class="cbox" id="mov-recorrente"><iconify-icon icon="ion:checkmark-outline"></iconify-icon></span> Repetir mensalmente</label>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="modal-foot wz-foot"><button class="btn btn-ghost wz-cancel" data-close>Cancelar</button><button class="btn btn-ghost wz-back" type="button">Voltar</button><button class="btn btn-primary wz-next" type="button">Próximo</button><button class="btn btn-primary wz-submit" id="mov-save">Salvar</button></div>
+</div></div>
+
+<div class="modal-wrap" id="m-export"><div class="modal">
+  <div class="modal-head"><h3>Exportar movimentações</h3><button class="mclose">&times;</button></div>
+  <div class="modal-body">
+    <label class="fl">Formato</label>
+    <div class="opt-grid">
+      <button class="opt on"><iconify-icon icon="ion:grid-outline"></iconify-icon> Excel <small>.xlsx</small></button>
+      <button class="opt"><iconify-icon icon="ion:document-text-outline"></iconify-icon> CSV <small>.csv</small></button>
+      <button class="opt"><iconify-icon icon="ion:document-outline"></iconify-icon> PDF <small>.pdf</small></button>
+    </div>
+    <label class="fl">Período</label>
+    <div class="sel">Julho 2026 <iconify-icon icon="ion:chevron-down-outline"></iconify-icon></div>
+    <label class="fl">Incluir</label>
+    <div class="chips"><span class="chipf on">Todos</span><span class="chipf">Só entradas</span><span class="chipf">Só saídas</span></div>
+    <div class="exp-sum"><iconify-icon icon="ion:checkmark-outline"></iconify-icon> 7 lançamentos no período · saldo R$ 5.350,00</div>
+  </div>
+  <div class="modal-foot"><button class="btn btn-ghost">Cancelar</button><button class="btn btn-primary"><iconify-icon icon="ion:download-outline"></iconify-icon> Exportar</button></div>
+</div></div>
+<div class="toast"><iconify-icon icon="ion:checkmark-outline"></iconify-icon><span class="tmsg">Lançamento salvo com sucesso</span></div>
+<script src="js/mov.js" defer></script>
+<script src="js/pwa.js" defer></script><script src="js/wizard.js" defer></script><script src="js/logout.js" defer></script><script src="js/profile.js" defer></script><script src="js/notificacoes.js" defer></script><script src="js/tema.js" defer></script><script src="js/som.js" defer></script><script src="js/modais.js" defer></script><script src="js/arrastar.js" defer></script><script src="js/toasts.js" defer></script><script src="js/mascara.js" defer></script><script src="js/puxar.js" defer></script><script src="js/esqueleto.js" defer></script><script src="js/push.js" defer></script></body></html>

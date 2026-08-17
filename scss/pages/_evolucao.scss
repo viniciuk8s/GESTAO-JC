@@ -1,0 +1,69 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Tela "Evolução" — obras (carteira/backlog + progresso) no tempo
+//  Reaproveita .delta-chip / .cmp-table / .cmp-vs de _comparativo.
+// ============================================================
+
+// KPI cards: chip no canto superior direito (igual ao Comparativo)
+#ev-kpis .sumcard { position: relative; }
+#ev-kpis .delta-chip { position: absolute; top: 13px; right: 13px; }
+
+// faixa de situação de prazo (agora)
+#ev-prazo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.ev-praz {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 13px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+
+  b { font-family: var(--font-head); font-size: 23px; font-weight: 800; line-height: 1.1; }
+  small { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; font-weight: 700; }
+
+  &.blue b  { color: var(--blue); }
+  &.red b   { color: var(--neg); }
+  &.green b { color: var(--pos); }
+  &.amber b { color: var(--amber); }
+}
+
+// selo de status
+.ev-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+
+  &.blue  { color: var(--blue); background: rgba(91, 141, 239, .14); }
+  &.green { color: var(--pos); background: rgba(52, 211, 153, .14); }
+  &.amber { color: var(--amber); background: rgba(251, 191, 36, .14); }
+  &.red   { color: var(--neg); background: rgba(248, 113, 113, .14); }
+  &.slate { color: var(--slate); background: rgba(148, 163, 184, .14); }
+}
+
+// barra de progresso na tabela
+.ev-progcell { display: flex; align-items: center; gap: 10px; justify-content: flex-end; }
+.ev-bar { width: 84px; height: 7px; border-radius: 999px; background: rgba(255, 255, 255, .08); overflow: hidden; flex: none; }
+.ev-fill {
+  display: block; height: 100%; border-radius: 999px; background: var(--blue);
+  &.green { background: var(--pos); }
+  &.amber { background: var(--amber); }
+  &.red   { background: var(--neg); }
+  &.slate { background: var(--slate); }
+}
+.ev-cli { display: block; color: var(--dim); font-weight: 500; font-size: 12px; }
+
+@media (max-width: 640px) {
+  #ev-prazo { grid-template-columns: repeat(2, 1fr); }
+}

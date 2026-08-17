@@ -1,0 +1,69 @@
+// ============================================================
+//  Micro-efeitos: ripple (toque), skeleton (carregando) e flash "ao vivo".
+// ============================================================
+
+// ---- Ripple (Material) — onda a partir do ponto do toque -------------------
+// overflow recorta a onda ao formato do controle. O box-shadow PRÓPRIO do
+// host não é recortado por overflow, então a "pílula" ativa mantém seu brilho.
+.btn,
+.icon-btn,
+.nav-item,
+.fab,
+.mini-act,
+.lt-chip { position: relative; overflow: hidden; }
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: currentColor;
+  opacity: .26;
+  pointer-events: none;
+  animation: ripple-out .6s ease-out forwards;
+}
+@keyframes ripple-out {
+  to { transform: scale(2.6); opacity: 0; }
+}
+
+// ---- Skeleton (shimmer) enquanto os dados chegam ---------------------------
+.skeleton {
+  color: transparent !important;
+  background: linear-gradient(100deg,
+    rgba(255, 255, 255, .05) 30%,
+    rgba(255, 255, 255, .13) 50%,
+    rgba(255, 255, 255, .05) 70%);
+  background-size: 200% 100%;
+  border-radius: 8px;
+  animation: shimmer 1.25s ease-in-out infinite;
+}
+.skeleton > * { visibility: hidden; }
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+// o saldo do herói usa background-clip:text (número em gradiente); como skeleton
+// mostramos a barra shimmer normal (dobro de classe p/ vencer `.va .hero-val`).
+.hero-val.skeleton {
+  background-image: linear-gradient(100deg,
+    rgba(255, 255, 255, .06) 30%,
+    rgba(255, 255, 255, .15) 50%,
+    rgba(255, 255, 255, .06) 70%);
+  background-size: 200% 100%;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-text-fill-color: transparent;
+  border-radius: 10px;
+}
+
+// ---- Flash "ao vivo": realça um valor quando muda em tempo real (SSE) -------
+.flash-live { animation: flash-live 1s ease-out; }
+@keyframes flash-live {
+  0%   { background: var(--accent-soft); box-shadow: 0 0 0 6px var(--accent-soft); border-radius: 6px; }
+  100% { background: transparent; box-shadow: 0 0 0 0 rgba(239, 99, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ripple { display: none; }
+  .skeleton { animation: none; }
+  .flash-live { animation: none; }
+}

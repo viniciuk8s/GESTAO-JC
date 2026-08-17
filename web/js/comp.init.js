@@ -1,0 +1,1 @@
+document.addEventListener("click",function(e){var t=e.target;if(t&&t.closest){if(t.closest(".mtab-mais")){document.body.classList.toggle("drawer-open")}else if(t.closest(".drawer-overlay")){document.body.classList.remove("drawer-open")}}})

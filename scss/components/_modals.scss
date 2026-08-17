@@ -1,0 +1,199 @@
+@use '../abstracts/mixins' as *;
+
+// ============================================================
+//  Modais (base compartilhada por todas as telas)
+// ============================================================
+.modal-wrap {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0, 0, 0, .62);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+// Toggles de abertura (por classe no <body>).
+body.detail-open #m-detail,
+body.novo-open #m-novo,
+body.export-open #m-export,
+body.day-open #m-day,
+body.form-open #m-form,
+body.jornada-open #m-jornada,
+body.reg-open #m-reg { display: flex; }
+
+.modal {
+  width: 100%;
+  max-width: 440px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--card);            // fundo por tema (navy no escuro, claro no branco)
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: none;
+  animation: modal-in .22s cubic-bezier(.22, .61, .36, 1) backwards;
+
+  &.modal-lg { max-width: 520px; }
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+
+  h3 {
+    margin: 0;
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 700;
+  }
+}
+
+.mclose {
+  background: transparent;
+  border: 0;
+  color: var(--mut);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 14px 18px;
+  overflow: auto;
+}
+
+.mrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13.5px;
+
+  &:last-child { border-bottom: 0; }
+
+  > span {
+    color: var(--mut);
+    font-weight: 500;
+    flex: 0 0 auto;
+  }
+
+  > b {
+    font-weight: 700;
+    text-align: right;
+  }
+}
+
+.modal-foot {
+  display: flex;
+  gap: 10px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--line);
+  flex: 0 0 auto;
+
+  .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+// ---- Animações ----
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+// ============================================================
+//  Bottom-sheet (mobile): o modal sobe de baixo, largura total,
+//  cantos arredondados no topo e um "puxador". Arrastar p/ baixo fecha (JS).
+// ============================================================
+@media (max-width: 640px) {
+  .modal-wrap { align-items: flex-end; padding: 0; }
+
+  .modal {
+    max-width: none;
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 20px 20px 0 0;
+    border-bottom: 0;
+    animation: sheet-up .3s cubic-bezier(.22, .61, .36, 1) backwards;
+
+    &.modal-lg { max-width: none; }
+    &.sheet-drag { animation: none; }                 // durante o arraste, JS controla o transform
+    &.sheet-snap { transition: transform .24s cubic-bezier(.22, .61, .36, 1); } // volta suave ao soltar
+  }
+
+  // puxador no topo do sheet
+  .modal-head {
+    position: relative;
+    padding-top: 24px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 9px; left: 50%;
+      transform: translateX(-50%);
+      width: 42px; height: 4px;
+      border-radius: 99px;
+      background: var(--line-2);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal { animation: none !important; }
+}
+
+// ---- Fecho: modal desce rápido + fundo esvaece (clicar fora / X / Cancelar) ----
+.modal-wrap.closing { animation: modal-wrap-out .22s ease forwards; }
+.modal-wrap.closing .modal { animation: modal-out-down .22s cubic-bezier(.33, 0, .3, 1) forwards; }
+@keyframes modal-wrap-out { to { opacity: 0; } }
+@keyframes modal-out-down {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
+
+// ---- Modal de detalhes do serviço agendado (home) ------------------------
+body.agdet-open #m-agdet { display: flex; }
+.ag-row { cursor: pointer; }
+.agd-top {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--line);
+}
+.agd-ic {
+  width: 44px; height: 44px; border-radius: 12px; flex: none;
+  display: grid; place-items: center; background: var(--accent-soft); color: var(--accent);
+  iconify-icon { font-size: 22px; }
+}
+.agd-ht { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.agd-ht b { font-size: 16px; line-height: 1.2; }
+.agd-list { display: flex; flex-direction: column; }
+.agd-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 11px 0; border-bottom: 1px solid var(--line);
+  &:last-child { border-bottom: 0; }
+}
+.agd-k {
+  display: inline-flex; align-items: center; gap: 8px; flex: none;
+  color: var(--mut); font-size: 12.5px;
+  iconify-icon { font-size: 16px; }
+}
+.agd-v { color: var(--txt); font-weight: 600; font-size: 13.5px; text-align: right; word-break: break-word; }
+.agd-obs-wrap {
+  flex-direction: column; align-items: flex-start; gap: 6px;
+  .agd-v { text-align: left; font-weight: 400; line-height: 1.5; }
+}

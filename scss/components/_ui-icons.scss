@@ -1,0 +1,45 @@
+// ============================================================
+//  Ícones injetados (Lucide/Iconify) — rótulos de formulário,
+//  cabeçalho de modal, botões e títulos de card.
+//  A injeção acontece no enhance.web.ts (função iconizar()).
+// ============================================================
+
+// ---- Rótulos de campo (form) ----
+.modal .field label > iconify-icon,
+.modal label.fl > iconify-icon {
+  color: var(--mut);
+  font-size: 13px;
+  margin-right: 5px;
+  vertical-align: -1px;
+}
+
+// ---- Cabeçalho do modal: chip com ícone antes do título ----
+// o .mh-ic é irmão do <h3>; empurramos o fechar (×) para a direita.
+.modal-head .mclose { margin-left: auto; }
+.mh-ic {
+  display: inline-grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  margin-right: 11px;
+  background: var(--accent-soft);
+  color: var(--accent-2);
+  font-size: 17px;
+  flex: 0 0 auto;
+}
+
+// ---- Botões do rodapé ----
+.modal-foot .btn > iconify-icon { font-size: 15px; }
+
+// ---- Títulos de card (tile-h) ----
+.th-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.th-title > iconify-icon {
+  color: var(--accent-2);
+  font-size: 15px;
+  flex: 0 0 auto;
+}

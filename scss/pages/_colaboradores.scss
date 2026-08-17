@@ -1,0 +1,122 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Colaboradores — grade de cartões + estado de API/offline
+// ============================================================
+.colab-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.colab {
+  @include flex-center(14px);
+  padding: 16px;
+
+  label.btn { cursor: pointer; }
+}
+
+.colab-av {
+  @include box(56px, 15px);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 17px;
+  color: #fff;
+}
+
+.colab-id {
+  flex: 1;
+  min-width: 0;
+
+  b {
+    display: block;
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 800;
+    @include ellipsis;
+  }
+
+  small {
+    color: var(--mut);
+    font-size: 12.5px;
+  }
+}
+
+.colab-acts {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+// ---- Pill de status da API -----------------------------------------------
+.api-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 13px;
+  border-radius: 999px;
+  @include icon(14px);
+
+  &.on {
+    @include tint($pos);
+
+    i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--pos);
+      display: block;
+      box-shadow: 0 0 0 3px rgba(52, 211, 153, .18);
+    }
+  }
+
+  &.off { @include tint($neg, .13); }
+}
+
+// ---- Cartão de offline ---------------------------------------------------
+.colab-offline {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 14px;
+  padding: 20px;
+  align-items: flex-start;
+
+  > svg, > iconify-icon {
+    width: 26px;
+    height: 26px;
+    color: var(--neg);
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+
+  b {
+    font-family: var(--font-head);
+    font-size: 15px;
+  }
+
+  p {
+    margin: 6px 0;
+    color: var(--mut);
+    font-size: 13px;
+  }
+
+  code {
+    display: inline-block;
+    background: var(--chip);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: ui-monospace, monospace;
+    font-size: 12.5px;
+    color: var(--accent-2);
+  }
+
+  .dim {
+    color: var(--dim);
+    font-size: 12px;
+  }
+}

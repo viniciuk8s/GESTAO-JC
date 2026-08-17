@@ -1,0 +1,58 @@
+@use '../abstracts/mixins' as *;
+
+// ============================================================
+//  Botões
+// ============================================================
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 13.5px;
+  border-radius: var(--r-sm);
+  padding: 10px 15px;
+  white-space: nowrap;
+  @include icon(16px);
+
+  &.sm {
+    padding: 8px 12px;
+    font-size: 12.5px;
+    @include icon(15px);
+
+    &.danger {
+      color: #f8a3a3;
+      padding: 8px 10px;
+    }
+  }
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-ghost {
+  background: var(--chip);
+  color: var(--txt);
+  border: 1px solid var(--line);
+
+  &.danger { color: #f8a3a3; }
+}
+
+// ---- Botão-ícone quadrado ------------------------------------------------
+.icon-btn {
+  @include box(40px, var(--r-sm));
+  border: 1px solid var(--line);
+  background: var(--chip);
+  color: var(--txt);
+  cursor: pointer;
+  @include icon(19px);
+
+  &.sm {
+    @include box(32px, 9px);
+    @include icon(16px);
+  }
+}

@@ -1,0 +1,68 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Tela "Comparativo" — evolução financeira mês a mês
+// ============================================================
+
+// chip de variação (Δ vs. mês anterior)
+.delta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+
+  &.up   { color: var(--pos); background: rgba(52, 211, 153, .14); }
+  &.down { color: var(--neg); background: rgba(248, 113, 113, .14); }
+  &.flat { color: var(--dim); background: rgba(255, 255, 255, .06); }
+}
+
+// KPI cards do comparativo: chip ancorado no canto superior direito
+#cmp-kpis .sumcard { position: relative; }
+#cmp-kpis .delta-chip { position: absolute; top: 13px; right: 13px; }
+
+.cmp-vs { color: var(--dim); font-weight: 600; font-size: 12px; }
+
+// tabela mês a mês
+.cmp-tablewrap { overflow-x: auto; margin: 2px -4px -4px; }
+.cmp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+
+  th {
+    text-align: right;
+    color: var(--dim);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  th:first-child { text-align: left; }
+
+  td {
+    text-align: right;
+    padding: 11px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, .04);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  td.cmp-mes { text-align: left; text-transform: capitalize; font-weight: 600; color: var(--txt); }
+  td.pos { color: var(--pos); }
+  td.neg { color: var(--neg); }
+
+  tbody tr { transition: background-color .14s ease; }
+  tbody tr:hover { background: var(--card-2); }
+  tbody tr:last-child td { border-bottom: 0; }
+
+  .delta-chip { font-size: 10.5px; padding: 3px 7px; }
+}
+.cmp-empty { text-align: center; color: var(--mut); padding: 26px 16px; }

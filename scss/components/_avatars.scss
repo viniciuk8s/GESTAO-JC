@@ -1,0 +1,30 @@
+@use 'sass:list';
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Avatares — 4 gradientes (a,b,c,d) compartilhados por
+//  .av / .emp-av / .colab-av. Antes: 12 regras copiadas à mão.
+// ============================================================
+@each $key, $stops in $avatars {
+  .av.#{$key},
+  .emp-av.#{$key},
+  .colab-av.#{$key} {
+    background: linear-gradient(135deg, list.nth($stops, 1), list.nth($stops, 2));
+  }
+}
+
+// Foto do colaborador substitui o avatar de iniciais.
+.av.foto,
+.emp-av.foto,
+.colab-av.foto {
+  background: none;
+  padding: 0;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}

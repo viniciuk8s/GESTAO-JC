@@ -1,0 +1,85 @@
+@use 'sass:map';
+@use 'sass:list';
+@use 'sass:meta';
+@use 'tokens' as *;
+@use 'functions' as *;
+
+// ============================================================
+//  Mixins reutilizáveis — o coração da redução de código
+// ============================================================
+
+// ---- Layout helpers ------------------------------------------------------
+@mixin flex-center($gap: null) {
+  display: flex;
+  align-items: center;
+  @if $gap != null { gap: $gap; }
+}
+
+@mixin grid-center {
+  display: grid;
+  place-items: center;
+}
+
+// Quadrado de ícone: largura = altura, cantos arredondados, conteúdo centrado.
+@mixin box($size, $radius, $rigid: true) {
+  width: $size;
+  height: $size;
+  border-radius: $radius;
+  display: grid;
+  place-items: center;
+  @if $rigid { flex: 0 0 auto; }
+}
+
+// Dimensiona o ícone (SVG inline ou o web component <iconify-icon>).
+// iconify-icon dimensiona pelo font-size (1em) e/ou width/height — setamos ambos.
+@mixin icon($w, $h: $w) {
+  svg, iconify-icon { width: $w; height: $h; }
+  iconify-icon { font-size: $w; line-height: 1; }
+}
+
+// ---- Texto ---------------------------------------------------------------
+@mixin ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin clamp-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ---- Cor / tint ----------------------------------------------------------
+// Fundo translúcido + texto sólido. $bg permite dissociar (ex.: laranja).
+@mixin tint($color, $alpha: .14, $bg: $color) {
+  background: rgba($bg, $alpha);
+  color: $color;
+}
+
+// Gera variantes-modificadoras de tint a partir de um mapa.
+// Valor pode ser uma cor (usa $alpha) ou uma lista (cor, alpha) por entrada.
+//   @include variants((ok: $pos, wait: $amber, info: ($blue, .16)));
+@mixin variants($map, $alpha: .14) {
+  @each $name, $spec in $map {
+    &.#{$name} {
+      @if meta.type-of($spec) == 'list' {
+        @include tint(list.nth($spec, 1), list.nth($spec, 2));
+      } @else {
+        @include tint($spec, $alpha);
+      }
+    }
+  }
+}
+
+// ---- Superfície translúcida: fundo + borda do mesmo matiz ----------------
+// Base repetida em todos os banners (aviso, info, conflito, erro).
+@mixin surface($color, $bg-alpha, $border-alpha) {
+  background: rgba($color, $bg-alpha);
+  border: 1px solid rgba($color, $border-alpha);
+}
+
+// ---- Responsivo ----------------------------------------------------------
+@mixin up($bp: $bp-lg)   { @media (min-width: $bp) { @content; } }
+@mixin down($bp: $bp-md) { @media (max-width: $bp) { @content; } }

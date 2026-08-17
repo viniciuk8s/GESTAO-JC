@@ -1,0 +1,60 @@
+// ============================================================
+//  Tokens — fonte única de verdade (cores, tipografia, raios)
+//  Espelham as CSS custom properties expostas em :root (base/_root)
+// ============================================================
+
+// ---- Paleta base ---------------------------------------------------------
+$bg:          #0a0b0f;
+$sb:          #0c0e13;   // sidebar / borda de dots
+$panel:       #12141b;   // modais, toast, selects nativos
+
+$txt:         #eef0f6;
+$mut:         #98a1b3;
+$dim:         #6b7385;
+
+// ---- Marca / acento ------------------------------------------------------
+$accent:      #d97b40;
+$accent-2:    #e6a173;
+
+// ---- Semânticas ----------------------------------------------------------
+$pos:         #34d399;   // verde
+$neg:         #f87171;   // vermelho
+$blue:        #5b8def;
+$amber:       #fbbf24;
+$violet:      #a78bfa;
+$slate:       #94a3b8;
+
+// ---- Paleta semântica (nome -> cor sólida) -------------------------------
+// Camada semântica sobre os tokens crus. Acessada via função hue().
+// Chaves entre aspas (green/red/blue/violet também são cores CSS).
+$hues: (
+  "green":  $pos,
+  "red":    $neg,
+  "blue":   $blue,
+  "amber":  $amber,
+  "violet": $violet,
+  "slate":  $slate,
+  "orange": $accent-2,
+);
+
+// ---- Gradientes de avatar (a, b, c, d) -----------------------------------
+$avatars: (
+  a: (#274a86, #0b284f),
+  b: (#b4530f, var(--accent)),
+  c: (#1f7a54, #0c4a34),
+  d: (#6d4bb0, #3a2568),
+);
+
+// ---- Tipografia ----------------------------------------------------------
+$font:      "'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif";
+$font-head: "'Sora','Inter',sans-serif";
+
+// ---- Raios ---------------------------------------------------------------
+$r:    12px;
+$r-sm: 10px;
+
+// ---- Breakpoints ---------------------------------------------------------
+$bp-lg:    960px;   // desktop
+$bp-md:    959px;   // < desktop
+$bp-phone: 640px;   // telefones
+$bp-xs:    380px;   // telefones estreitos

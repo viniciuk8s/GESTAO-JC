@@ -1,0 +1,17 @@
+{
+  "name": "jc-gestao",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JC Elétrica & Solar — sistema de gestão (site estático + SCSS + lógica TypeScript/API)",
+  "scripts": {
+    "build:css": "sass scss/main.scss web/css/app.css --style=compressed --no-source-map",
+    "build:css:dev": "sass --watch scss/main.scss web/css/app.css --style=expanded",
+    "build:js": "npm --prefix logica-ts run build:all",
+    "build:site": "python3 build_site.py",
+    "build": "npm run build:css && npm run build:js && npm run build:site",
+    "serve": "python3 -m http.server 8080 --directory web"
+  },
+  "devDependencies": {
+    "sass": "^1.102.0"
+  }
+}

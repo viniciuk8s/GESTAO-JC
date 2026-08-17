@@ -1,0 +1,71 @@
+// ============================================================
+//  Transição entre seções/telas — DESLIZE horizontal DIRECIONAL
+//  Avançar: a atual sai p/ ESQUERDA, a nova entra pela DIREITA.
+//  Voltar (histórico): a nova entra pela ESQUERDA (sentido inverso).
+//  A direção vem da classe .nav-fwd / .nav-back no <html> (script inline
+//  no <head>, síncrono → sem flash). Só o .content desliza; sidebar/topbar fixas.
+//
+//  Enter usa fill-mode "backwards" (não "both"): o .content NÃO fica com um
+//  transform preso ao terminar (evita virar containing-block de position:fixed).
+// ============================================================
+
+// evita barra de rolagem horizontal durante o deslize.
+// overflow:clip recorta sem criar scroll container → não quebra o position:sticky.
+.main { overflow-x: clip; }
+
+.content {
+  animation: enter-right .38s cubic-bezier(.22, .61, .36, 1) backwards;
+}
+// voltar pelo histórico → entra pelo lado oposto
+.nav-back .content { animation-name: enter-left; }
+
+@keyframes enter-right {
+  from { opacity: 0; transform: translateX(46px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes enter-left {
+  from { opacity: 0; transform: translateX(-46px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+// Saída (o JS adiciona .is-leaving antes de navegar): sai para a esquerda.
+body.is-leaving .content {
+  animation: screen-out .2s cubic-bezier(.4, 0, 1, 1) forwards;
+}
+// no "voltar" (leaving-back) a saída inverte: sai para a direita
+body.is-leaving.leaving-back .content { animation-name: exit-right; }
+@keyframes screen-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-46px); }
+}
+@keyframes exit-right {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(46px); }
+}
+
+// O deslize da tela já é a "entrada"; dispensa o stagger individual dos tiles.
+.content .tile { animation: none; }
+
+// ---- Barra de progresso no topo (durante a navegação) ----------------------
+.nav-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 200;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--accent);
+  box-shadow: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .22s ease, opacity .3s ease;
+}
+.nav-progress.on { opacity: 1; }
+
+// Acessibilidade: sem movimento para quem prefere assim.
+@media (prefers-reduced-motion: reduce) {
+  .content,
+  body.is-leaving .content,
+  .content .tile { animation: none !important; }
+  .nav-progress { transition: opacity .2s ease; }
+}

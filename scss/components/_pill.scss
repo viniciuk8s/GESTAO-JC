@@ -1,0 +1,15 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Pill de status (compartilhada: home, fiscal, financeiro)
+// ============================================================
+.pill {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 8px;
+  flex: 0 0 auto;
+
+  @include variants((ok: $pos, wait: $amber, bad: $neg), .15);
+}

@@ -1,0 +1,220 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Camada de melhorias de UX (enhance.web.js)
+//  - números que animam (CountUp), tooltips (Tippy), reveal on load
+//  - toolbars de lista (busca/ordenar/filtrar), skeletons, micro-interações
+//  Escrito para conviver com o design system existente (.card/.tile/.va).
+// ============================================================
+
+// ---- tabular numbers: KPIs não "tremem" a largura ao contar ----------------
+.sc-info b, .hero-val, .kpi-b, [data-count] { font-variant-numeric: tabular-nums; }
+
+// ---- micro-interações: elevação/foco em superfícies clicáveis --------------
+@media (prefers-reduced-motion: no-preference) {
+  .card, .tile, .sumcard, .row, .arow, .emp, .prj-card, .doc-row, .ext-row {
+    transition: transform .18s cubic-bezier(.34, 1.2, .64, 1), box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
+  }
+  // linhas de lista: leve deslize + destaque ao passar o mouse
+  .row:hover, .arow:hover, .doc-row:hover, .ext-row:hover, .empday:hover {
+    background: var(--card-2);
+    transform: translateX(2px);
+  }
+  // cartões clicáveis (projetos, colaboradores): sobem um tico
+  .prj-card:hover, .emp:hover {
+    transform: translateY(-3px);
+    box-shadow: none;
+    border-color: var(--accent-soft);
+  }
+  // KPI tiles: destaque do ícone ao hover do tile
+  .sumcard { cursor: default; }
+  .sumcard:hover { transform: translateY(-2px); }
+  .sumcard:hover .si { transform: scale(1.06); }
+  .si { transition: transform .18s ease, box-shadow .18s ease; }
+}
+
+// ---- acessibilidade: anel de foco visível e consistente --------------------
+a, button, input, select, textarea, [tabindex], .row, .arow, .empday, .prj-card {
+  &:focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+}
+
+// ---- scrollbar on-brand (webkit) -------------------------------------------
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, .16) transparent;
+}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, .14);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, .26); background-clip: padding-box; }
+::selection { background: var(--accent-soft); color: #fff; }
+
+// ---- reveal on load (entrada suave, com fallback seguro) -------------------
+// Só esconde quando o JS marcou <html class="jsx">; sem JS, tudo visível.
+@media (prefers-reduced-motion: no-preference) {
+  .jsx .reveal { opacity: 0; transform: translateY(12px); }
+  .jsx .reveal.in {
+    opacity: 1;
+    transform: none;
+    transition: opacity .55s ease, transform .55s cubic-bezier(.22, 1, .36, 1);
+  }
+  // entrada escalonada de linhas de lista (classe adicionada 1x pelo enhancer)
+  .row-stagger > * { animation: row-in .5s cubic-bezier(.22, 1, .36, 1) both; }
+  @for $i from 1 through 14 {
+    .row-stagger > *:nth-child(#{$i}) { animation-delay: #{$i * 0.035}s; }
+  }
+}
+@keyframes row-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+// ---- número contando: leve realce ------------------------------------------
+[data-count].counting { color: var(--accent-2); transition: color .3s; }
+
+// ---- skeleton shimmer (estados de carregamento) ----------------------------
+.skel { position: relative; overflow: hidden; background: rgba(255, 255, 255, .05); border-radius: 8px; color: transparent !important; }
+.skel::after {
+  content: ""; position: absolute; inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .08), transparent);
+  animation: shimmer 1.3s infinite;
+}
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+
+// ---- toolbar de listas (busca / ordenar / filtrar) -------------------------
+.list-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 14px;
+}
+.lt-field {
+  position: relative;
+  flex: 1 1 220px;
+  min-width: 180px;
+
+  iconify-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--dim); font-size: 17px; pointer-events: none; }
+  input {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 34px 10px 36px;
+    color: var(--txt);
+    font: inherit;
+    font-size: 13.5px;
+    transition: border-color .18s, box-shadow .18s;
+  }
+  input:focus { outline: 0; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .lt-clear {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    border: 0; background: transparent; color: var(--dim); cursor: pointer;
+    width: 22px; height: 22px; border-radius: 6px; display: none; place-items: center;
+  }
+  .lt-clear:hover { color: var(--txt); background: var(--card-2); }
+  &.has-val .lt-clear { display: grid; }
+}
+.lt-seg {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.lt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--mut);
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .16s ease;
+
+  iconify-icon { font-size: 14px; }
+  &:hover { color: var(--txt); border-color: rgba(255, 255, 255, .18); }
+  &.on {
+    color: #fff;
+    background: var(--accent);
+    border-color: transparent;
+    box-shadow: none;
+  }
+}
+.lt-count { margin-left: auto; color: var(--dim); font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.lt-empty {
+  text-align: center;
+  color: var(--mut);
+  padding: 38px 16px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  background: var(--card);
+
+  iconify-icon { font-size: 30px; color: var(--dim); display: block; margin: 0 auto 8px; }
+  b { display: block; color: var(--txt); font-weight: 700; margin-bottom: 2px; }
+  small { color: var(--dim); }
+}
+.lt-hidden { display: none !important; }
+
+// ============================================================
+//  Tippy.js — base estrutural + tema "jc" (dark/laranja on-brand)
+//  (portado do tippy.css; tema custom em vez de importar o default)
+// ============================================================
+.tippy-box[data-animation=fade][data-state=hidden] { opacity: 0; }
+[data-tippy-root] { max-width: calc(100vw - 10px); }
+.tippy-box {
+  position: relative;
+  color: var(--txt);
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: normal;
+  outline: 0;
+  transition-property: transform, visibility, opacity;
+
+  // tema jc
+  background: #171a22;
+  border: 1px solid rgba(255, 255, 255, .10);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, .75);
+}
+.tippy-box[data-placement^=top] > .tippy-arrow { bottom: 0; }
+.tippy-box[data-placement^=top] > .tippy-arrow:before { bottom: -7px; left: 0; border-width: 8px 8px 0; border-top-color: initial; transform-origin: center top; }
+.tippy-box[data-placement^=bottom] > .tippy-arrow { top: 0; }
+.tippy-box[data-placement^=bottom] > .tippy-arrow:before { top: -7px; left: 0; border-width: 0 8px 8px; border-bottom-color: initial; transform-origin: center bottom; }
+.tippy-box[data-placement^=left] > .tippy-arrow { right: 0; }
+.tippy-box[data-placement^=left] > .tippy-arrow:before { border-width: 8px 0 8px 8px; border-left-color: initial; right: -7px; transform-origin: center left; }
+.tippy-box[data-placement^=right] > .tippy-arrow { left: 0; }
+.tippy-box[data-placement^=right] > .tippy-arrow:before { left: -7px; border-width: 8px 8px 8px 0; border-right-color: initial; transform-origin: center right; }
+.tippy-arrow { width: 16px; height: 16px; color: #171a22; }
+.tippy-arrow:before { content: ""; position: absolute; border-color: transparent; border-style: solid; }
+.tippy-content { position: relative; padding: 7px 11px; z-index: 1; }
+.tippy-box b, .tippy-box strong { color: #fff; font-weight: 800; }
+
+// ---- Polish de UI: números em evidência + tipografia profissional -----------
+.sc-info b, .hero-val, .kpi-b, [data-count], .ex-val, .a-val, .agd-v,
+.leg-val, .rb-v, .money-input input, .pill, .cmp-v, .ev-v {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+}
+.sumcard .sc-info b {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--txt);
+  line-height: 1.15;
+}
+.sumcard .sc-info small { font-weight: 700; letter-spacing: .05em; }
+// títulos com tracking sutil (mais "apurado", sem exagero)
+h1, h2, h3, .ptitle, .th-title, .tile-h > b, .modal-head h3 { letter-spacing: -.015em; }
+body { text-rendering: optimizeLegibility; }

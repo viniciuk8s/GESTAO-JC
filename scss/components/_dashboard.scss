@@ -1,0 +1,156 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Dashboard (limpo / profissional) — KPIs + barras de ranking
+// ============================================================
+.dash {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dash-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+
+  h3 {
+    margin: 0;
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -.3px;
+    color: var(--txt);
+  }
+
+  span {
+    color: var(--mut);
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+}
+
+.dash-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.dk {
+  padding: 15px 16px;
+
+  &-top {
+    @include flex-center(9px);
+    color: var(--mut);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  &-ic {
+    @include box(27px, 8px);
+    @include icon(15px);
+
+    @include variants(("blue": (hue("blue"), .16), "green": hue("green"), "amber": hue("amber")));
+    &.orange { @include tint($accent-2, .14, $accent); }
+  }
+
+  &-v {
+    font-family: var(--font-head);
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -.4px;
+    line-height: 1;
+    margin-top: 11px;
+    color: var(--txt);
+  }
+
+  &-s {
+    color: var(--dim);
+    font-size: 11.5px;
+    font-weight: 600;
+    margin-top: 5px;
+  }
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 16px;
+}
+
+.dp {
+  padding: 16px;
+
+  &.span-all { grid-column: 1 / -1; }
+
+  h4 {
+    margin: 0;
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--txt);
+  }
+
+  .dp-sub {
+    color: var(--dim);
+    font-size: 11.5px;
+    font-weight: 500;
+    margin: 2px 0 4px;
+  }
+
+  .chart { margin: 0 -4px; }
+}
+
+// ---- Barras de ranking ---------------------------------------------------
+.rbars {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 14px;
+}
+
+.rbar {
+  display: grid;
+  grid-template-columns: 158px 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.rb-l {
+  color: var(--txt);
+  font-size: 12.5px;
+  font-weight: 600;
+  @include ellipsis;
+}
+
+.rb-track {
+  height: 8px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, .06);
+  overflow: hidden;
+}
+
+.rb-fill {
+  height: 100%;
+  border-radius: 5px;
+
+  @each $key, $color in (o: var(--accent), b: $blue, g: $pos, v: $violet, a: $amber, n: #64748b) {
+    &.#{$key} { background: $color; }
+  }
+}
+
+.rb-v {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 12.5px;
+  white-space: nowrap;
+  color: var(--txt);
+  min-width: 74px;
+  text-align: right;
+}

@@ -1,0 +1,7 @@
+@use 'sass:map';
+@use 'tokens' as *;
+
+// Recupera a cor sólida de um "hue" nomeado do mapa $hues.
+@function hue($name) {
+  @return map.get($hues, $name);
+}

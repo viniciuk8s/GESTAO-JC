@@ -1,0 +1,162 @@
+@use '../abstracts/mixins' as *;
+
+// Remove o selo "ao vivo / tempo real" de todas as seções (visual mais limpo).
+.live-badge { display: none !important; }
+
+// Legendas de cor discretas (transparentes) sob os gráficos — ajudam a
+// entender o que cada cor significa, sem competir com os dados.
+.legend {
+  display: flex; flex-wrap: wrap; gap: 7px 14px;
+  margin-top: 12px; opacity: .66;
+}
+.legend .lg {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px; color: var(--mut); font-weight: 500;
+}
+.legend .lg i {
+  width: 9px; height: 9px; border-radius: 3px; flex: none; opacity: .8;
+}
+.legend .lg-note { font-size: 11.5px; color: var(--mut); font-style: italic; }
+
+// ==============================================================
+//  Estética "banco digital" — mobile-first, moderno e fluido.
+//  Importado por último: redesenha o app no viewport do celular.
+// ==============================================================
+@include down {
+
+  // ---- fundo com profundidade (glow laranja suave no topo) -----------------
+  body { background: var(--bg); }
+  .content { padding: 6px 16px calc(86px + env(safe-area-inset-bottom, 0)); gap: 18px; }
+
+  // ---- saudação (cabeçalho) -----------------------------------------------
+  .page-head { margin-top: 2px; }
+  .page-head h1 { font-size: 25px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+  .page-head h1 .greet-hi { color: var(--mut); font-weight: 600; }
+  .page-head p { color: var(--mut); font-size: 13px; margin-top: 3px; }
+
+  // ---- HERO: cartão de saldo (a estrela) ----------------------------------
+  .hero-tile {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    background: var(--card-2);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 20px 20px 10px;
+    box-shadow: none;
+  }
+  .hero-top { display: flex; align-items: center; justify-content: space-between; }
+  .hero-top small { color: rgba(238, 241, 248, .72); font-size: 12.5px; font-weight: 600; letter-spacing: .02em; }
+  .hero-top-r { display: flex; align-items: center; gap: 8px; }
+  .hero-eye {
+    display: grid; place-items: center;
+    width: 34px; height: 34px; border-radius: 11px;
+    background: rgba(255, 255, 255, .08); border: 0; color: rgba(255, 255, 255, .85);
+    @include icon(18px); cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: transform .12s ease, background .16s ease;
+    &:active { transform: scale(.9); background: rgba(255, 255, 255, .14); }
+  }
+  .hero-val {
+    font-family: var(--font-head);
+    font-size: 34px; font-weight: 800; letter-spacing: -.02em;
+    color: #fff; margin: 10px 0 2px; transition: filter .2s ease;
+  }
+  .hero-sub { color: rgba(238, 241, 248, .62); font-size: 12.5px; }
+  .hero-tile.saldo-oculto .hero-val { filter: blur(11px); }
+  .hero-tile.saldo-oculto .hero-sub { opacity: .45; }
+  .hero-chart { margin: 2px -8px -8px; min-height: 96px; }
+  .live-badge { background: rgba(52, 211, 153, .14); color: #6ee7b7; border: 0; }
+
+  // ---- Ações rápidas (linha estilo "Pix/Pagar") ---------------------------
+  .qa-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: -2px; }
+  .qa {
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
+    color: var(--mut); font-size: 11px; font-weight: 600; text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    small { line-height: 1.15; }
+    &:active .qa-ic { transform: scale(.9); }
+  }
+  .qa-ic {
+    width: 54px; height: 54px; border-radius: 17px;
+    display: grid; place-items: center;
+    background: var(--card); border: 1px solid var(--line); color: var(--txt);
+    @include icon(23px);
+    transition: transform .12s ease, background .16s ease, border-color .16s ease;
+  }
+  .qa-ic.accent {
+    background: var(--accent);
+    color: #fff; border-color: transparent;
+    box-shadow: none;
+  }
+
+  // ---- KPIs / cartões de resumo -------------------------------------------
+  .sumrow { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .sumrow > * { border-radius: 18px !important; }
+
+  // ---- Cartões (tiles) -----------------------------------------------------
+  .tile {
+    border-radius: 20px;
+    padding: 18px;
+    background: var(--card);
+    border: 1px solid var(--line);
+  }
+  .tile-h {
+    font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--mut); margin-bottom: 12px;
+  }
+  .va-grid2 { gap: 14px; }
+  .chart-box { min-height: 190px; }
+
+  // ---- Listas estilo extrato (linhas com ícone + valor) -------------------
+  .exrow, .list-tile {
+    border-radius: 16px !important;
+    padding: 13px 12px !important;
+  }
+  .exrow + .exrow { margin-top: 8px; }
+
+  // ---- Botões (pill, táteis) ----------------------------------------------
+  .btn {
+    border-radius: 14px;
+    font-weight: 700;
+    min-height: 48px;
+    transition: transform .12s ease, filter .16s ease;
+    &:active { transform: scale(.98); }
+  }
+  .btn-primary {
+    background: var(--accent);
+    border: 0; color: #fff;
+    box-shadow: none;
+  }
+
+  // ---- FAB acima da barra inferior (evita colisão) -----------------------
+  .fab {
+    bottom: calc(84px + env(safe-area-inset-bottom, 0)) !important;
+  }
+
+  // ---- Barra inferior (premium) -------------------------------------------
+  .mtabs {
+    border-top: 1px solid var(--line);
+  }
+  .mtab {
+    font-size: 10px;
+    .mti { @include icon(24px); }
+
+  }
+
+  // ---- Topbar (limpa, translúcida sobre o gradiente) ----------------------
+  .topbar { border-bottom: 0; }
+  .ptitle { font-weight: 700; letter-spacing: -.01em; }
+
+  // ---- fluidez: aparição suave dos blocos ao entrar -----------------------
+  .content > .tile, .content > .qa-row, .content > .sumrow, .content > .va-grid2 {
+    animation: bank-in .42s cubic-bezier(.22, .61, .36, 1) backwards;
+  }
+  .content > .qa-row { animation-delay: .04s; }
+  .content > .sumrow { animation-delay: .08s; }
+  .content > .va-grid2 { animation-delay: .12s; }
+}
+
+@keyframes bank-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

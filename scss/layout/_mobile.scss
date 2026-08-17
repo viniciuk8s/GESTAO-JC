@@ -1,0 +1,144 @@
+@use '../abstracts/mixins' as *;
+
+// ============================================================
+//  Mobile-first — experiência de toque (importado por último).
+//  Barra inferior, alvos de toque, modais em bottom-sheet,
+//  safe-area (notch / barra inferior do iPhone), topbar fixa.
+// ============================================================
+
+// ---- Barra de navegação inferior (só no mobile) --------------------------
+.mtabs { display: none; }
+
+@include down {
+  .mtabs {
+    display: flex;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 58;
+    background: color-mix(in srgb, var(--sb) 92%, transparent);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
+    backdrop-filter: saturate(160%) blur(12px);
+    border-top: 1px solid var(--line-2);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .mtab {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 56px;               // alvo de toque confortável
+    padding: 8px 4px 7px;
+    color: var(--dim);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .01em;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: color .16s ease, transform .12s ease;
+
+    .mti { @include icon(23px); line-height: 0; }
+    .mtl { line-height: 1; }
+
+    &:active { transform: scale(.92); }
+
+    &.active {
+      // estilo WhatsApp: ícone colorido dentro de uma "pílula", nome destacado abaixo
+      .mti {
+        color: var(--accent);
+        background: var(--accent-soft);
+        border-radius: 999px;
+        padding: 3px 17px;
+        transition: background .18s ease, color .18s ease;
+      }
+      .mtl { color: var(--txt); font-weight: 700; }
+    }
+  }
+
+  // o conteúdo não pode ficar escondido atrás da barra inferior
+  .content { padding-bottom: calc(78px + env(safe-area-inset-bottom, 0)) !important; }
+
+  // toast estilo mobile: largura cheia, acima da barra; escondido some de vez
+  .toast {
+    left: 16px; right: 16px; margin: 0 auto; max-width: 440px;
+    bottom: calc(84px + env(safe-area-inset-bottom, 0));
+    transform: translateY(calc(100% + 140px));
+  }
+  body.toast-open .toast { transform: translateY(0); }
+}
+
+// ---- Topbar fixa + área segura no topo -----------------------------------
+@include down {
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding-top: calc(11px + env(safe-area-inset-top, 0));
+    background: var(--topbar);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
+    backdrop-filter: saturate(160%) blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  // esconde o átomo à direita no mobile — dá espaço e limpa a barra
+  .brand-top { display: none; }
+
+  .sidebar { padding-top: env(safe-area-inset-top, 0); }
+}
+
+// ---- Alvos de toque (mínimo ~44px) ---------------------------------------
+@include down {
+  .btn { min-height: 46px; padding-inline: 16px; }
+  .icon-btn, .menu-btn, .bell { width: 44px; height: 44px; }
+
+  // 16px nos campos evita o zoom automático do iOS ao focar
+  input, select, textarea,
+  .field input, .auth-field input, .auth-field textarea {
+    min-height: 46px;
+    font-size: 16px;
+  }
+
+  .nav-item { padding: 13px 14px; }              // itens do drawer maiores
+  .mtab, .btn, .icon-btn, .nav-item, a, button { -webkit-tap-highlight-color: transparent; }
+}
+
+// ---- Modais em bottom-sheet (deslizam de baixo) --------------------------
+@include down {
+  .modal-overlay { align-items: flex-end; padding: 0; }
+
+  .modal, .modal.modal-lg {
+    width: 100%;
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 20px 20px 0 0;                 // cantos arredondados só no topo
+    border-bottom: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    animation: sheet-up .26s cubic-bezier(.22, .61, .36, 1) backwards;
+  }
+
+  // "puxador" (grabber) no topo da folha
+  .modal-head { position: relative; }
+  .modal-head::before {
+    content: '';
+    position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 4px; border-radius: 999px;
+    background: var(--line-2);
+  }
+
+  .modal-foot { position: sticky; bottom: 0; background: inherit; }
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+// ---- Espaçamento / leitura no mobile -------------------------------------
+@include down {
+  .content { padding: 12px 14px; gap: 14px; }
+  h1 { font-size: 22px; }
+  .card, .va-card, .panel { border-radius: 12px; }
+}

@@ -1,0 +1,211 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Projetos (obras) — cards + detalhe 360°
+// ============================================================
+.proj-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.proj-card {
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+
+  &:hover { background: var(--card-2); border-color: var(--line-2); }
+}
+
+.proj-top {
+  @include flex-center(12px);
+  align-items: flex-start;
+}
+
+.proj-ic {
+  @include box(44px, 12px);
+  @include icon(20px);
+
+  @include variants((amber: $amber, "blue": ($blue, .16), "violet": $violet, "green": $pos, slate: $slate));
+  &.orange { @include tint($accent-2, .14, $accent); }
+}
+
+.proj-id {
+  flex: 1;
+  min-width: 0;
+
+  b {
+    display: block;
+    font-family: var(--font-head);
+    font-size: 14.5px;
+    font-weight: 800;
+    line-height: 1.3;
+    @include clamp-lines(2);
+  }
+
+  small {
+    display: block;
+    color: var(--mut);
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 2px;
+    @include ellipsis;
+  }
+}
+
+// ---- Selo de status (card e detalhe) -------------------------------------
+.pstatus {
+  flex: 0 0 auto;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+
+  @include variants((amber: $amber, "blue": ($blue, .16), "green": $pos, "red": $neg), .15);
+}
+
+// ---- Barra de progresso --------------------------------------------------
+.proj-prog {
+  @include flex-center(10px);
+  margin-top: 14px;
+}
+
+.pp-track {
+  flex: 1;
+  height: 7px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, .06);
+  overflow: hidden;
+}
+
+.pp-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width .3s ease;
+
+  @each $key, $color in (amber: #fbbf24, "blue": #5b8def, "green": $pos, "red": $neg) {
+    &.#{$key} { background: $color; }
+  }
+}
+
+.pp-pct {
+  flex: 0 0 auto;
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--mut);
+  min-width: 34px;
+  text-align: right;
+}
+
+// ---- Mini-resumo financeiro (card) ---------------------------------------
+.proj-fin {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+
+  small {
+    display: block;
+    color: var(--dim);
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+
+  b {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 800;
+    margin-top: 3px;
+    display: block;
+    white-space: nowrap;
+
+    &.pos { color: var(--pos); }
+    &.neg { color: var(--neg); }
+  }
+}
+
+.proj-foot {
+  @include flex-center(16px);
+  margin-top: 12px;
+  color: var(--mut);
+  font-size: 12px;
+  font-weight: 600;
+
+  span { @include flex-center(6px); }
+  iconify-icon, svg { color: var(--dim); }
+}
+
+// ============================================================
+//  Detalhe 360° (modal)
+// ============================================================
+.projd-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.projd-tag {
+  @include flex-center(5px);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--mut);
+  background: var(--chip);
+  border: 1px solid var(--line);
+  padding: 5px 10px;
+  border-radius: 8px;
+
+  iconify-icon, svg { width: 13px; height: 13px; color: var(--dim); }
+}
+
+.projd-fin {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+
+  .pf {
+    padding: 11px 13px;
+    border-radius: 10px;
+    background: var(--chip);
+    border: 1px solid var(--line);
+
+    small {
+      display: block;
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    b {
+      font-family: var(--font-head);
+      font-size: 16px;
+      font-weight: 800;
+      margin-top: 3px;
+      display: block;
+
+      &.pos { color: var(--pos); }
+      &.neg { color: var(--neg); }
+    }
+  }
+}
+
+// Abertura dos modais desta tela.
+body.projdet-open #m-proj-det,
+body.projnovo-open #m-proj-novo { display: flex; }
+
+// ---- Responsivo ----------------------------------------------------------
+@include up {
+  .proj-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+}
+
+@media (max-width: 480px) {
+  .projd-fin { grid-template-columns: 1fr; }
+  .proj-fin b { font-size: 13px; }
+}

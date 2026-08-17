@@ -1,0 +1,478 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Relatórios & Documentos — abas, documentos, fiscal, planilhas
+// ============================================================
+.rtabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  background: var(--chip);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.rtab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 8px;
+  border: 0;
+  background: transparent;
+  color: var(--mut);
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 13.5px;
+  border-radius: 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  @include icon(16px);
+
+  .tcount {
+    font-size: 11px;
+    font-weight: 800;
+    background: rgba(255, 255, 255, .08);
+    color: var(--mut);
+    border-radius: 999px;
+    padding: 1px 7px;
+  }
+
+  &.on {
+    background: var(--accent-soft);
+    color: #fff;
+    svg, iconify-icon { color: var(--accent); }
+    .tcount { background: var(--accent); color: #fff; }
+  }
+}
+
+.rpane {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &[hidden] { display: none; }
+}
+
+// ---- Banner de alerta ----------------------------------------------------
+.alert-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px 15px;
+  border-radius: 12px;
+  @include surface($amber, .09, .26);
+  color: #e6c07a;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.55;
+
+  &[hidden] { display: none; }
+
+  svg, iconify-icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    margin-top: 1px;
+    color: #fbbf24;
+  }
+
+  b { color: #f4d79a; }
+
+  .ab-link {
+    margin-left: auto;
+    flex: 0 0 auto;
+    color: #fbbf24;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    align-self: center;
+  }
+}
+
+.pane-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  h3 {
+    margin: 0;
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  p {
+    margin: 2px 0 0;
+    color: var(--mut);
+    font-size: 12.5px;
+  }
+}
+
+// ---- Documentos ----------------------------------------------------------
+.docwrap { padding: 6px 14px; }
+
+.docrow {
+  @include flex-center(13px);
+  padding: 12px 4px;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+  border-radius: 10px;
+
+  &:first-child { border-top: 0; }
+  &:hover { background: var(--chip); }
+}
+
+.doc-ic {
+  @include box(44px, 12px);
+  @include icon(20px);
+
+  @include variants((
+    "blue":   (hue("blue"), .16),
+    "green":  hue("green"),
+    "violet": hue("violet"),
+    "amber":  hue("amber"),
+    "slate":  hue("slate"),
+  ));
+  &.orange { @include tint($accent-2, .14, $accent); }
+}
+
+.doc-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-top {
+  @include flex-center(8px);
+
+  b {
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 0;
+    @include ellipsis;
+  }
+}
+
+.doc-sub {
+  @include flex-center(6px);
+  color: var(--mut);
+  font-size: 12px;
+  margin-top: 3px;
+  min-width: 0;
+
+  svg, iconify-icon {
+    width: 12px;
+    height: 12px;
+    flex: 0 0 auto;
+  }
+
+  .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--dim);
+    flex: 0 0 auto;
+  }
+
+  span { @include ellipsis; }
+}
+
+.doc-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.vbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 7px;
+  white-space: nowrap;
+  @include icon(12px);
+
+  @include variants((ok: $pos, warn: ($amber, .15), bad: $neg, info: $blue));
+}
+
+.doc-fmt {
+  font-size: 11px;
+  color: var(--dim);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.doc-acts {
+  display: flex;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+// ---- Linhas de conta (fiscal / financeiro) -------------------------------
+.arow {
+  @include flex-center(12px);
+  padding: 11px 2px;
+  border-top: 1px solid var(--line);
+
+  &:first-child { border-top: 0; }
+}
+
+.a-val {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 13.5px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  min-width: 104px;
+  text-align: right;
+}
+
+// ---- Dropzone ------------------------------------------------------------
+.dz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  text-align: center;
+  padding: 28px 18px;
+  border: 1.5px dashed var(--line-2);
+  border-radius: 14px;
+  background: var(--chip);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .dz-ic {
+    @include box(46px, 13px, $rigid: false);
+    background: var(--card-2);
+    color: var(--accent-2);
+    @include icon(22px);
+  }
+
+  b {
+    color: var(--txt);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  small {
+    font-size: 11.5px;
+    color: var(--dim);
+    font-weight: 600;
+  }
+
+  &.sm { padding: 20px 16px; }
+}
+
+// ---- Títulos de cartão ---------------------------------------------------
+.card-title {
+  @include flex-center(9px);
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 4px;
+
+  svg, iconify-icon {
+    width: 17px;
+    height: 17px;
+    color: var(--accent-2);
+  }
+}
+
+.card-desc {
+  color: var(--mut);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+// ---- Histórico de importação/exportação ----------------------------------
+.hrow {
+  @include flex-center(12px);
+  padding: 11px 2px;
+  border-top: 1px solid var(--line);
+
+  &:first-child { border-top: 0; }
+}
+
+.h-ic {
+  @include box(36px, 10px);
+  background: var(--chip);
+  border: 1px solid var(--line);
+  color: var(--mut);
+  @include icon(16px);
+}
+
+.h-main {
+  flex: 1;
+  min-width: 0;
+
+  b {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+    @include ellipsis;
+  }
+
+  small {
+    color: var(--mut);
+    font-size: 11.5px;
+  }
+}
+
+.h-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 7px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+
+  @include variants((imp: $pos, exp: $blue));
+}
+
+// ---- Grade de planilhas + preview ----------------------------------------
+.rel-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.preview-doc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px;
+  border-radius: 12px;
+  background: var(--chip);
+  border: 1px solid var(--line);
+  margin-bottom: 6px;
+
+  .pd-ic {
+    @include box(54px, 14px, $rigid: false);
+    background: var(--accent-soft);
+    color: var(--accent-2);
+    @include icon(26px);
+  }
+
+  b {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  small {
+    color: var(--dim);
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+}
+
+.map-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin-top: 4px;
+
+  th {
+    text-align: left;
+    color: var(--dim);
+    font-weight: 700;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  td {
+    padding: 8px;
+    border-bottom: 1px solid var(--line);
+    color: var(--txt);
+    font-weight: 500;
+
+    .arr {
+      color: var(--accent-2);
+      font-weight: 800;
+    }
+  }
+
+  tr:last-child td { border-bottom: 0; }
+}
+
+// Toggles de abertura dos modais desta tela.
+body.doc-open #m-doc,
+body.docview-open #m-docview,
+body.import-open #m-import,
+body.export-open #m-export { display: flex; }
+
+// ============================================================
+//  Responsivo — Relatórios
+// ============================================================
+@include up {
+  .rel-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+}
+
+@include down {
+  .rtabs { grid-template-columns: 1fr 1fr; gap: 5px; }
+}
+
+// ---- Telefones: layout empilhado, sem truncar info importante ----
+@media (max-width: 640px) {
+  .rtab { padding: 11px 6px; }
+
+  // Documentos: título em 2 linhas + selo de validade sempre visível.
+  .docrow {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "ic main acts"
+      "ic side acts";
+    column-gap: 10px;
+    row-gap: 6px;
+    align-items: center;
+    padding: 12px 2px;
+  }
+  .doc-acts .mini-act { width: 32px; height: 32px; }
+  .doc-ic { grid-area: ic; align-self: start; }
+  .doc-main { grid-area: main; min-width: 0; }
+  .doc-side { grid-area: side; flex-direction: row; align-items: center; gap: 8px; }
+  .doc-acts { grid-area: acts; align-self: center; }
+  .doc-top b { white-space: normal; @include clamp-lines(2); }
+  .doc-sub { flex-wrap: wrap; row-gap: 2px; }
+
+  // Fiscal / Financeiro: valor e status descem para a 2ª linha.
+  .arow { flex-wrap: wrap; row-gap: 6px; column-gap: 10px; }
+  .arow > .doc-ic { display: none; }
+  .arow .rmid { flex: 1 1 100%; }
+  .arow .pill { order: 2; }
+  .arow .a-val { order: 3; margin-left: auto; min-width: 0; }
+
+  // Extrato (escopo .rpane: não afeta a tela de Movimentações).
+  .rpane .ex-desc { white-space: normal; @include clamp-lines(2); }
+  .rpane .ex-bot { flex-wrap: wrap; row-gap: 2px; }
+  .rpane .ex-meta { white-space: normal; }
+
+  .pane-head { gap: 8px; }
+  .pane-head .btn { padding: 8px 12px; font-size: 12.5px; }
+}
+
+@media (max-width: 380px) {
+  .rtab .tcount { display: none; }
+  .doc-acts { gap: 4px; }
+  .rpane .mini-act { width: 32px; height: 32px; }
+  .rpane .sumcard b { font-size: 18px; }
+}

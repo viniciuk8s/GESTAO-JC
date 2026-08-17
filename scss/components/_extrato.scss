@@ -1,0 +1,239 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Movimentações — cards de resumo, filtros e linhas de extrato
+// ============================================================
+.sumrow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.sumcard {
+  padding: 18px;
+  @include flex-center(13px);
+
+  .si {
+    @include box(42px, 12px);
+    @include icon(20px);
+  }
+
+  small {
+    display: block;
+    color: var(--mut);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  b {
+    font-family: var(--font-head);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -.3px;
+  }
+}
+
+.sc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sc-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 8px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  @include icon(12px);
+
+  &.pos { @include tint($pos, .13); }
+  &.neg {
+    @include tint($neg, .13);
+    svg, iconify-icon { transform: scaleY(-1); }
+  }
+}
+
+// ---- Filtros -------------------------------------------------------------
+.filters {
+  @include flex-center(10px);
+  flex-wrap: wrap;
+}
+
+.search {
+  flex: 1;
+  min-width: 180px;
+  @include flex-center(9px);
+  background: var(--chip);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  color: var(--mut);
+  @include icon(17px);
+
+  input {
+    border: 0;
+    background: transparent;
+    color: var(--txt);
+    font-family: var(--font);
+    font-size: 13.5px;
+    width: 100%;
+    outline: none;
+  }
+}
+
+.chips {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.chipf {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--mut);
+  background: var(--chip);
+  border: 1px solid var(--line);
+  padding: 8px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+
+  &.on {
+    background: var(--accent-soft);
+    border-color: transparent;
+    color: #fff;
+  }
+}
+
+// ---- Linhas de extrato ---------------------------------------------------
+.exday {
+  @include flex-center(10px);
+  margin: 16px 2px 6px;
+  color: var(--dim);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+}
+
+.exrow {
+  @include flex-center(13px);
+  padding: 12px 8px;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+  border-radius: 10px;
+
+  &:first-child { border-top: 0; }
+  &:hover { background: var(--chip); }
+}
+
+.excat {
+  position: relative;
+  @include box(44px, 12px);
+  @include icon(20px);
+
+  &.in  { @include tint($pos, .13); }
+  &.out { @include tint($neg, .13); }
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: -3px;
+    bottom: -3px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 2.5px solid #0c0e13;
+  }
+
+  &.st-pago::after     { background: var(--pos); }
+  &.st-pendente::after { background: #fbbf24; }
+  &.st-agendado::after { background: #5b8def; }
+}
+
+.exmain {
+  flex: 1;
+  min-width: 0;
+}
+
+.ex-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ex-desc {
+  flex: 1;
+  min-width: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  @include ellipsis;
+}
+
+.ex-amt {
+  flex: 0 0 auto;
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -.2px;
+  white-space: nowrap;
+  line-height: 1.35;
+
+  &.pos { color: var(--pos); }
+  &.neg { color: var(--neg); }
+}
+
+.ex-bot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 3px;
+}
+
+.ex-meta {
+  flex: 1;
+  min-width: 0;
+  color: var(--mut);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  @include ellipsis;
+}
+
+.ex-saldo {
+  flex: 0 0 auto;
+  color: var(--dim);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.exchev {
+  color: var(--dim);
+  flex: 0 0 auto;
+  @include grid-center;
+  @include icon(18px);
+}
+
+.stt {
+  font-weight: 700;
+
+  &.pago     { color: var(--pos); }
+  &.pendente { color: #fbbf24; }
+  &.agendado { color: #5b8def; }
+}

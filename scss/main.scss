@@ -1,0 +1,53 @@
+// ============================================================
+//  JC Gestão — folha de estilo principal (arquitetura 7-1)
+//  Compila para app.css (injetado pelo build.py).
+//  Ordem = cascata: base -> layout -> componentes -> páginas -> responsivo
+// ============================================================
+
+// 1. Base --------------------------------------------------------
+@use 'base/root';
+@use 'base/reset';
+
+// 2. Layout ------------------------------------------------------
+@use 'layout/sidebar';
+@use 'layout/topbar';
+@use 'layout/page-head';
+
+// 3. Componentes -------------------------------------------------
+@use 'components/buttons';
+@use 'components/avatars';
+@use 'components/status-icon';
+@use 'components/pill';
+@use 'components/extrato';
+@use 'components/modals';
+@use 'components/forms';
+@use 'components/toast';
+@use 'components/mini-act';
+@use 'components/dashboard';
+
+// 4. Páginas -----------------------------------------------------
+@use 'pages/home';
+@use 'pages/agenda';
+@use 'pages/crud';
+@use 'pages/dias';
+@use 'pages/colaboradores';
+@use 'pages/relatorios';
+@use 'pages/projetos';
+@use 'pages/comparativo';
+@use 'pages/evolucao';
+@use 'components/va'; // sistema SAS VA (dashboards mobile)
+@use 'components/enhance'; // melhorias de UX: countup/tippy/reveal/toolbars
+@use 'components/notifications'; // central de notificações (sino + painel)
+@use 'components/feed'; // feed de atividade ao vivo (SSE) na Início
+@use 'components/transitions'; // transição suave ao trocar de seção/tela
+@use 'components/touch'; // feedback tátil (mobile): controles afundam ao toque
+@use 'components/fx'; // micro-efeitos: ripple, skeleton (shimmer) e flash "ao vivo"
+@use 'components/ui-icons'; // ícones (Lucide) em rótulos de form, modais e títulos de card
+
+// 5. Responsivo global (por último — preserva a cascata) ---------
+@use 'layout/responsive';
+@use 'layout/mobile'; // mobile-first: barra inferior, toque, bottom-sheet, safe-area
+@use 'layout/bank'; // estética banco digital (mobile)
+@use 'components/wizard'; // formulários em etapas (wizard)
+@use 'components/profile'; // perfil (avatar/dropdown) e sidebar organizada
+@use 'components/notif-panel'; // painel de notificações + menu de ações

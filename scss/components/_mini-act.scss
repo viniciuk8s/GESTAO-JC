@@ -1,0 +1,28 @@
+@use '../abstracts/mixins' as *;
+
+// ============================================================
+//  .mini-act — botão-ícone compacto (CRUD, agenda, documentos)
+// ============================================================
+.mini-act {
+  @include box(34px, 9px);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--mut);
+  cursor: pointer;
+  @include icon(16px);
+
+  &:hover {
+    background: var(--card-2);
+    color: var(--txt);
+  }
+
+  &.danger:hover {
+    color: var(--neg);
+    border-color: rgba(248, 113, 113, .4);
+  }
+
+  &.done:hover {
+    color: var(--pos);
+    border-color: rgba(52, 211, 153, .4);
+  }
+}

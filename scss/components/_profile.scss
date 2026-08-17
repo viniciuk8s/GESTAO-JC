@@ -1,0 +1,115 @@
+@use '../abstracts/mixins' as *;
+
+// ==============================================================
+//  Perfil (avatar + dropdown) e barra lateral organizada (mobile)
+// ==============================================================
+
+// ---- Avatar de perfil no topo -------------------------------------------
+.pf-btn {
+  width: 38px; height: 38px; padding: 0; border: 0; background: none; cursor: pointer;
+  border-radius: 50%; flex: none; -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease;
+  &:active { transform: scale(.92); }
+  &.on .pf-av { border-color: var(--accent); }
+}
+.pf-av {
+  width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 13px; font-weight: 700; color: #fff; letter-spacing: .02em; overflow: hidden;
+  background: #1b2c52;
+  border: 1px solid rgba(255, 255, 255, .14);
+  &.lg { width: 48px; height: 48px; font-size: 16px; flex: none; }
+  img { width: 100%; height: 100%; object-fit: cover; display: block; }
+}
+
+// ---- Dropdown de perfil --------------------------------------------------
+.pf-menu {
+  position: fixed; top: 62px; right: 12px; z-index: 92; width: 264px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: none;
+  padding: 6px; overflow: hidden;
+  transform-origin: top right; transform: translateY(-8px) scale(.96); opacity: 0;
+  transition: transform .2s cubic-bezier(.22, .61, .36, 1), opacity .2s ease;
+  &.on { transform: none; opacity: 1; }
+  &[hidden] { display: none; }
+}
+.pf-head { display: flex; align-items: center; gap: 12px; padding: 12px 12px 14px; }
+.pf-id { min-width: 0; }
+.pf-id b { display: block; font-size: 14.5px; color: var(--txt); line-height: 1.2; }
+.pf-id small {
+  display: block; font-size: 12.5px; color: var(--mut); margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pf-body { border-top: 1px solid var(--line); padding-top: 6px; }
+.pf-item {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  padding: 12px; border: 0; background: none; cursor: pointer; text-align: left;
+  color: var(--neg); font-size: 14px; font-weight: 600; border-radius: 10px;
+  @include icon(18px);
+  transition: background .15s ease;
+  &:hover, &:active { background: rgba(224, 65, 58, .10); }
+}
+
+@include down {
+  // dropdown vira uma faixa logo abaixo da barra do topo
+  .pf-menu { top: calc(56px + env(safe-area-inset-top, 0)); right: 10px; left: 10px; width: auto; }
+}
+
+// ---- Barra lateral (drawer) mais organizada -----------------------------
+.nav-sec {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); padding: 4px 12px; margin-top: 12px;
+  &:first-child { margin-top: 0; }
+}
+
+@include down {
+  .sb-nav { padding: 6px 10px; }
+  .nav-item {
+    border-radius: 12px; padding: 13px 14px; font-size: 15px; gap: 12px;
+    .ic { @include icon(20px); }
+  }
+  .nav-sec { padding: 12px 12px 2px; }
+  .sb-foot { padding: 10px; }
+  .user-card { border-radius: 14px; padding: 12px; gap: 11px; }
+  .user-card .avatar { width: 42px; height: 42px; }
+  .user-card .uinfo b { font-size: 14.5px; }
+  .user-card .uinfo small { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+
+// ---- Botão de alternar tema ---------------------------------------------
+.theme-btn { @include icon(19px); }
+.auth-theme {
+  position: absolute; top: calc(14px + env(safe-area-inset-top, 0)); right: 16px; z-index: 6;
+  width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+  background: var(--card); border: 1px solid var(--line); color: var(--mut); cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  &:active { transform: scale(.94); }
+}
+
+// ---- Folha "Configurar conta" -------------------------------------------
+body.cfg-open #cfg-sheet { display: flex; }
+.cfg-foto {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 16px;
+  .pf-av.lg { width: 64px; height: 64px; font-size: 20px; }
+  .btn { @include icon(16px); }
+}
+.cfg-nota {
+  display: flex; align-items: center; gap: 7px; margin-top: 14px;
+  font-size: 12.5px; color: var(--mut); @include icon(15px);
+  iconify-icon { color: var(--pos); flex: none; }
+}
+.pf-item.neutro {
+  color: var(--txt);
+  &:hover, &:active { background: var(--card-2); }
+}
+
+// ---- Aba de conta (mesmo layout da confirmação de sair, à esquerda) ------
+.cf-sheet.pf-sheet {
+  text-align: left;
+  padding: 16px 14px calc(12px + env(safe-area-inset-bottom, 0));
+}
+.pf-sheet .pf-head {
+  padding: 6px 8px 14px; margin-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+}
+.pf-sheet .pf-opts { padding-top: 6px; display: flex; flex-direction: column; gap: 2px; }
+.pf-sheet .pf-item { border-radius: 12px; }

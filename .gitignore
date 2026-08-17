@@ -1,0 +1,25 @@
+# Dependências
+node_modules/
+
+# Segredos — NUNCA versionar
+.env
+.env.*
+!.env.example
+
+# Banco embarcado (PGlite) — gerado em runtime
+logica-ts/data/
+
+# Uploads em runtime (documentos/fotos reais enviados por usuários)
+logica-ts/uploads/
+
+# Bundles intermediários da API (o resultado final já fica em web/js via build_site.py)
+logica-ts/dist/
+
+# Sass / mapas
+.sass-cache/
+*.css.map
+
+# SO / editor
+.DS_Store
+Thumbs.db
+*.log

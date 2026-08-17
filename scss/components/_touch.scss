@@ -1,0 +1,22 @@
+// ============================================================
+//  Feedback de toque (mobile) — resposta tátil ao pressionar
+//  Os controles "afundam" levemente ao toque, dando sensação de app nativo.
+//  (Em telas touch não há :hover; o :active cobre o gesto de tocar.)
+// ============================================================
+.btn,
+.icon-btn,
+.bell,
+.tb-avatar,
+.fab { transition: transform .12s ease, box-shadow .16s ease, background .16s ease, color .16s ease; }
+
+.btn:active,
+.icon-btn:active,
+.bell:active,
+.tb-avatar:active { transform: scale(.95); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:active,
+  .icon-btn:active,
+  .bell:active,
+  .tb-avatar:active { transform: none; }
+}

@@ -1,0 +1,65 @@
+// ============================================================
+//  Feed de Atividade (Início) — stream AO VIVO de mudanças (SSE)
+//  Cada linha = um evento emitido pela API quando algo muda no banco.
+// ============================================================
+
+.feed-tile .tile-h { display: flex; align-items: center; justify-content: space-between; }
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  max-height: 320px;
+  overflow-y: auto;
+  margin-top: 2px;
+  scrollbar-width: thin;
+}
+
+.feed-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 9px 4px;
+  &:not(:last-child) { border-bottom: 1px solid var(--line); }
+}
+
+.feed-ic {
+  flex: none;
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  display: grid; place-items: center;
+  font-size: 15px;
+  background: var(--accent-soft);
+  color: var(--accent-2);
+  iconify-icon { font-size: 15px; }
+
+  &.pos   { background: rgba(52, 211, 153, .14); color: #34d399; }
+  &.neg   { background: rgba(248, 113, 113, .14); color: #f87171; }
+  &.blue  { background: rgba(91, 141, 239, .14);  color: #5b8def; }
+  &.amber { background: rgba(251, 191, 36, .14);  color: #fbbf24; }
+  &.viol  { background: rgba(167, 139, 250, .14); color: #a78bfa; }
+}
+
+.feed-body {
+  min-width: 0;
+  flex: 1;
+  b {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  small { color: var(--mut); font-size: 11.5px; }
+  .fe-ator { color: var(--txt); opacity: .75; font-weight: 600; }
+  .fe-dot { opacity: .4; margin: 0 5px; }
+}
+
+@keyframes feedIn {
+  from { opacity: 0; transform: translateY(-7px); background: var(--accent-soft); }
+  to   { opacity: 1; transform: none; background: transparent; }
+}
+.feed-row.novo { animation: feedIn .6s ease; border-radius: 8px; }
+
+.feed-empty { padding: 18px 4px; }

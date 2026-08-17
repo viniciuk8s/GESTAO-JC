@@ -1,0 +1,17 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  .si — ícone de status (compartilhado: extrato, agenda)
+//  O tamanho é definido no contexto; aqui ficam só os tints.
+// ============================================================
+.si {
+  @include variants((
+    "green": hue("green"),
+    "red":   hue("red"),
+    "blue":  (hue("blue"), .16),
+    "amber": hue("amber"),
+  ));
+  &.acc { @include tint($accent-2, .14, $accent); }
+}

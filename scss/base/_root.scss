@@ -1,0 +1,72 @@
+// ============================================================
+//  :root — CSS custom properties (theming em tempo de execução)
+//  Mantidas para que HTML/JS e utilitários var() continuem válidos.
+// ============================================================
+:root {
+  // Fundo azul-marinho (base do novo tema) + hierarquia de superfícies:
+  //   sidebar (mais escura) < fundo < card (mais clara) — dá profundidade.
+  --bg: #0a0c12;
+  --card: #131d3c;
+  --card-2: #1a2650;
+  --line: rgba(255, 255, 255, .075);
+  --line-2: rgba(255, 255, 255, .13);
+  --txt: #dde2ee;
+  --mut: #8e98b4;
+  --dim: #6e7896;
+  --brand: #c0442a;           // laranja escuro (quase vermelho)
+  --accent: #c0442a;          // primário: laranja escuro (quase vermelho)
+  --accent-2: #d97a5f;
+  --accent-soft: rgba(192, 68, 42, .16);
+  --grad-txt: linear-gradient(100deg, #d97a5f, #c0442a 55%, #a3371f);
+  --pos: #4cba8e;
+  --neg: #e08585;
+  --chip: rgba(255, 255, 255, .05);
+  --sb: #06091d;              // sidebar: o elemento mais escuro
+  --topbar: rgba(9, 17, 40, .66);
+  --font: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-head: 'Inter', system-ui, sans-serif;
+  // Cantos quase retos (inspirado na referência) + sombra fina e leve nos cards.
+  --r: 9px;
+  --r-sm: 7px;
+  --r-card: 8px;
+  --shadow-card: none;
+}
+
+// =====================================================================
+//  Tema CLARO — cinza claro (nunca branco 100%) + azul-marinho da logo.
+// =====================================================================
+[data-theme="light"] {
+  --bg: #e9edf4;
+  --card: #f6f8fc;            // cinza bem claro (não branco puro)
+  --card-2: #eef2f8;
+  --line: rgba(16, 32, 64, .10);
+  --line-2: rgba(16, 32, 64, .16);
+  --txt: #2b3654;
+  --mut: #5b6883;
+  --dim: #8a94ab;
+  --brand: #c0442a;
+  --accent: #c0442a;          // primário: laranja escuro (quase vermelho)
+  --accent-2: #d97a5f;
+  --accent-soft: rgba(192, 68, 42, .12);
+  --grad-txt: linear-gradient(100deg, #d97a5f, #c0442a 60%, #a3371f);
+  --pos: #2a9d70;
+  --neg: #cf5a5a;
+  --chip: rgba(16, 32, 64, .05);
+  --sb: #e4e8f1;              // sidebar clara
+  --topbar: rgba(246, 248, 252, .78);
+  --shadow-card: none;
+}
+// fundo do tema ESCURO: navy bem escuro com leve profundidade
+[data-theme="dark"] body {
+  background: linear-gradient(180deg, #12141c 0%, #0a0c12 60%) fixed;
+}
+// fundo do tema claro: gradiente de cinza (não chapado, não branco)
+[data-theme="light"] body {
+  background: linear-gradient(180deg, #fbfcff 0%, #eef1f8 100%) fixed;
+}
+
+// Transição suave de cores ao alternar o tema (classe temporária via JS).
+html.tema-anim, html.tema-anim *,
+html.tema-anim *::before, html.tema-anim *::after {
+  transition: background-color .26s ease, background-image .26s ease, color .26s ease, border-color .26s ease, fill .26s ease, box-shadow .26s ease !important;
+}

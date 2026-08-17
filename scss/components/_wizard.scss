@@ -1,0 +1,124 @@
+@use '../abstracts/mixins' as *;
+
+// ==============================================================
+//  Wizard de formulários em etapas — transições e progresso.
+// ==============================================================
+.wizard { position: relative; }
+
+// ---- Barra de progresso (movida para o RODAPÉ via JS) --------------------
+.wz-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.wz-dots { display: flex; gap: 6px; flex: 1; }
+.wz-dots i {
+  height: 4px; flex: 1; border-radius: 999px;
+  background: var(--line-2);
+  transition: background .35s ease, box-shadow .35s ease;
+}
+.wz-dots i.on {
+  background: var(--accent);
+}
+.wz-label { font-size: 12.5px; color: var(--mut); font-weight: 600; white-space: nowrap; }
+.wz-label .wz-name { color: var(--txt); }
+.wz-label .wz-cur { color: var(--accent); }
+
+// ---- Rodapé: progresso ocupa a linha de cima; botões, a de baixo ---------
+.wz-foot {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 10px;
+}
+.wz-foot .wz-head {
+  flex: 1 0 100%; order: -1; margin: 0;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
+}
+.wz-foot .btn { flex: 1; justify-content: center; }
+.wz-foot .wz-next, .wz-foot .wz-submit { flex: 1.4; }
+
+// ---- Trilho / etapas (transição direcional deslizante) -------------------
+.wz-track { position: relative; overflow: hidden; }
+.wz-step { display: none; }
+.wz-step.on {
+  display: block;
+  animation: wz-in .34s cubic-bezier(.22, .61, .36, 1) both;
+}
+.wizard.back .wz-step.on { animation-name: wz-in-back; }
+
+@keyframes wz-in {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes wz-in-back {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+// espaçamento interno consistente entre campos de uma etapa
+.wz-step > * + * { margin-top: 12px; }
+.wz-step .form-grid { margin-top: 0; }
+
+// ---- Validação: destaca e "chacoalha" o campo vazio ----------------------
+.wz-invalid,
+.wz-invalid .inp,
+.money-input:has(.wz-invalid) {
+  border-color: var(--neg) !important;
+  box-shadow: 0 0 0 3px rgba(224, 65, 58, .18) !important;
+}
+.wz-invalid { animation: wz-shake .4s ease; }
+@keyframes wz-shake {
+  10%, 90% { transform: translateX(-2px); }
+  30%, 70% { transform: translateX(4px); }
+  50%      { transform: translateX(-7px); }
+}
+
+// ---- Pulso sutil quando avança automaticamente --------------------------
+.wizard.wz-auto .wz-dots i.on { animation: wz-pulse .42s ease; }
+@keyframes wz-pulse {
+  50% { opacity: .55; }
+}
+
+// No mobile o wizard herda o bottom-sheet dos modais (já definido em _mobile).
+@include down {
+  .wz-head { margin-bottom: 18px; }
+  .wz-foot .btn { min-height: 50px; }
+}
+
+// ==============================================================
+//  Folha de confirmação (ex.: sair da conta) — bottom-sheet no mobile
+// ==============================================================
+.cf-overlay {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(4, 8, 20, .62);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  opacity: 0; transition: opacity .24s ease;
+}
+.cf-overlay.on { opacity: 1; }
+.cf-overlay[hidden] { display: none; }
+.cf-sheet {
+  width: 100%; max-width: 380px; text-align: center;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 20px; padding: 24px 22px;
+  box-shadow: none;
+  transform: translateY(12px) scale(.98);
+  transition: transform .26s cubic-bezier(.22, .61, .36, 1);
+}
+.cf-overlay.on .cf-sheet { transform: none; }
+.cf-ic {
+  width: 56px; height: 56px; margin: 0 auto 14px; border-radius: 16px;
+  display: grid; place-items: center; @include icon(26px);
+  background: var(--accent-soft); color: var(--accent);
+}
+.cf-sheet h3 { font-family: var(--font-head); font-size: 19px; margin: 0 0 6px; color: var(--txt); }
+.cf-sheet p { color: var(--mut); font-size: 14px; line-height: 1.5; margin: 0 0 20px; }
+.cf-actions { display: flex; gap: 10px; }
+.cf-actions .btn { flex: 1; justify-content: center; min-height: 48px; }
+
+@include down {
+  .cf-overlay { align-items: flex-end; padding: 0; }
+  .cf-sheet {
+    max-width: none; border-radius: 22px 22px 0 0; border-bottom: 0;
+    padding: 26px 20px calc(26px + env(safe-area-inset-bottom, 0));
+    transform: translateY(100%);
+    animation: none;
+  }
+  .cf-overlay.on .cf-sheet { transform: none; }
+}

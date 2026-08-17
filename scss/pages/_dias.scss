@@ -1,0 +1,162 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Dias trabalhados — banner, colaboradores e registros
+// ============================================================
+.info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  @include surface($blue, .08, .2);
+  color: #a9c2f0;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.5;
+
+  svg, iconify-icon {
+    width: 17px;
+    height: 17px;
+    flex: 0 0 auto;
+    margin-top: 1px;
+    color: #5b8def;
+  }
+
+  b { color: #c7dbfb; }
+}
+
+.emps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.emp {
+  padding: 0;
+  overflow: hidden;
+}
+
+.emp-head {
+  @include flex-center(13px);
+  padding: 15px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.emp-av {
+  @include box(42px, 12px);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+}
+
+.emp-id {
+  flex: 1;
+  min-width: 0;
+
+  b {
+    display: block;
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 800;
+    @include ellipsis;
+  }
+
+  small {
+    color: var(--mut);
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+
+.emp-stats {
+  display: flex;
+  gap: 20px;
+  flex: 0 0 auto;
+
+  div { text-align: right; }
+
+  b {
+    display: block;
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  small {
+    color: var(--dim);
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+}
+
+.emp-days { padding: 4px 10px 8px; }
+
+.empday {
+  @include flex-center(12px);
+  padding: 10px 8px;
+  border-radius: 9px;
+  cursor: pointer;
+
+  & + .empday { border-top: 1px solid var(--line); }
+  &:hover { background: var(--chip); }
+}
+
+.ed-date {
+  flex: 0 0 54px;
+  font-family: var(--font-head);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--mut);
+}
+
+.ed-main {
+  flex: 1;
+  min-width: 0;
+
+  b {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+    @include ellipsis;
+  }
+
+  small {
+    color: var(--mut);
+    font-size: 12px;
+  }
+}
+
+.ed-dur {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--accent-2);
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+input[type=date].inp { cursor: pointer; }
+input[type=date]::-webkit-calendar-picker-indicator {
+  filter: invert(.65);
+  cursor: pointer;
+}
+
+.ed-new {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--pos);
+  background: rgba(52, 211, 153, .15);
+  padding: 1px 6px;
+  border-radius: 6px;
+  vertical-align: middle;
+}

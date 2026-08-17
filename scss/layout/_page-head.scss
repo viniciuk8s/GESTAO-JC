@@ -1,0 +1,31 @@
+@use '../abstracts/mixins' as *;
+
+// ============================================================
+//  Cabeçalho de página (módulos)
+// ============================================================
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -.4px;
+  }
+
+  p {
+    margin: 3px 0 0;
+    color: var(--mut);
+    font-size: 13px;
+    font-weight: 500;
+  }
+}
+
+.ph-actions {
+  @include flex-center(10px);
+  flex-wrap: wrap;
+}

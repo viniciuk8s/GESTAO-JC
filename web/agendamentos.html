@@ -1,0 +1,114 @@
+<!doctype html><html lang="pt-BR" data-theme="dark"><head><script src="js/agenda-1.init.js" defer></script><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>JC Gestão — Agendamentos</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#091128"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="JC Gestão"><link rel="apple-touch-icon" href="img/icon-192.png"><link rel="stylesheet" href="css/app.css"><style>
+/* avatar do usuário com foto (cartão do menu) + botão sair */
+.user-card .avatar.foto{ padding:0; overflow:hidden; }
+.user-card .avatar.foto img{ width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block; }
+.user-card .uicon{ cursor:pointer; }
+/* ===== tela de login ===== */
+.auth-wrap{ position:relative; overflow:hidden; min-height:100vh; min-height:100dvh; display:grid; place-items:center; padding:24px;
+  background:radial-gradient(1100px 520px at 50% -14%, rgba(192, 68, 42,.12), transparent 60%), var(--bg,#0c0e13); }
+.auth-wave{ position:absolute; left:50%; bottom:-4%; transform:translateX(-50%); width:min(1100px,150%); max-width:none; opacity:.55; pointer-events:none; z-index:0; }
+.auth-card{ position:relative; z-index:1; width:100%; max-width:404px; background:var(--card,#151821); border:1px solid var(--line,#232838);
+  border-radius:20px; padding:30px 26px; box-shadow:none; }
+.auth-logo{ display:flex; justify-content:center; margin-bottom:14px; }
+.auth-logo img{ height:46px; }
+.auth-card h1{ font-family:var(--font-head,'Inter',sans-serif); font-size:22px; text-align:center; margin:2px 0 4px; color:var(--txt,#fff); }
+.auth-card .sub{ text-align:center; color:var(--mut,#98a1b3); font-size:13.5px; margin:0 0 20px; }
+.auth-field{ margin-bottom:14px; }
+.auth-field label{ display:block; font-size:12.5px; color:var(--mut,#98a1b3); margin-bottom:6px; font-weight:600; }
+.auth-field input, .auth-field textarea{ width:100%; box-sizing:border-box; background:var(--bg,#0c0e13);
+  border:1px solid var(--line,#232838); border-radius:12px; padding:12px 14px; color:var(--txt,#fff); font-size:15px; font-family:inherit; }
+.auth-field input:focus, .auth-field textarea:focus{ outline:none; border-color:var(--accent,#ef6300); }
+.auth-btn{ width:100%; justify-content:center; margin-top:6px; font-size:15px; padding:13px; }
+.auth-alt{ text-align:center; margin-top:16px; font-size:13.5px; color:var(--mut,#98a1b3); }
+.auth-alt a{ color:var(--accent-2,#ff8a3d); font-weight:600; cursor:pointer; text-decoration:none; }
+.auth-erro{ background:rgba(248,113,113,.12); border:1px solid rgba(248,113,113,.4); color:#fca5a5;
+  border-radius:10px; padding:10px 12px; font-size:13px; margin-bottom:14px; }
+.auth-ok{ text-align:center; padding:12px 4px; }
+.auth-ok .okic{ font-size:46px; color:#34d399; }
+.auth-ok h2{ font-family:var(--font-head,'Inter',sans-serif); font-size:19px; margin:10px 0 6px; color:var(--txt,#fff); }
+.auth-ok p{ color:var(--mut,#98a1b3); font-size:14px; margin:0 0 16px; line-height:1.5; }
+.auth-btn{ border-radius:14px; }
+.auth-card[hidden]{ display:none !important; }
+/* mostrar/ocultar senha */
+.pw-wrap{ position:relative; }
+.pw-wrap input{ padding-right:48px; }
+.pw-eye{ position:absolute; right:6px; top:50%; transform:translateY(-50%); width:36px; height:36px; display:grid; place-items:center;
+  background:none; border:0; color:var(--mut,#98a1b3); cursor:pointer; border-radius:10px; font-size:20px; }
+.pw-eye:active{ background:rgba(255,255,255,.06); }
+.auth-hint{ text-align:center; color:var(--dim,#6e7896); font-size:12px; margin-top:20px; }
+/* ---- mobile: login em tela cheia, com cara de app ---- */
+@media (max-width:640px){
+  .auth-wrap{ padding:0; place-items:stretch; }
+  .auth-card{ max-width:none; min-height:100dvh; border:0; border-radius:0; box-shadow:none; background:transparent;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:26px 22px calc(30px + env(safe-area-inset-bottom,0)); padding-top:calc(46px + env(safe-area-inset-top,0)); }
+  .auth-logo{ margin-bottom:22px; }
+  .auth-logo img{ height:56px; }
+  .auth-card h1{ font-size:27px; }
+  .auth-card .sub{ font-size:14px; margin-bottom:26px; }
+  .auth-field{ margin-bottom:16px; }
+  .auth-field label{ font-size:13px; }
+  .auth-field input{ font-size:16px; padding:15px 16px; border-radius:14px; min-height:54px; }
+  .pw-wrap input{ padding-right:52px; }
+  .auth-btn{ padding:16px; font-size:16px; min-height:56px; margin-top:10px; }
+  .auth-wave{ opacity:.4; bottom:-2%; }
+}
+</style><script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/apexcharts@3.54.1/dist/apexcharts.min.js"></script><script data-nav>(function(){try{var h=document.documentElement,d=sessionStorage.getItem('jc-force-dir');if(d){sessionStorage.removeItem('jc-force-dir')}var s=history.state||{},i=s.jcIdx;if(typeof i!=='number'){i=(+sessionStorage.getItem('jcIdx')||0)+1;history.replaceState(Object.assign({},s,{jcIdx:i}),'')}var p=+sessionStorage.getItem('jcIdx')||0;var back=d?d==='back':i<p;h.classList.add(back?'nav-back':'nav-fwd');sessionStorage.setItem('jcIdx',i)}catch(e){document.documentElement.classList.add('nav-fwd')}})()</script></head><body><script src="js/auth.js" defer></script><script src="js/enhance.js" defer></script><script src="js/notif.js" defer></script>
+<div class="drawer-overlay"></div>
+<div class="app">
+  <aside class="sidebar"><div class="sb-head"><a href="home.html"><img class="sb-logo" src="img/logo-dark.png" alt="JC Elétrica & Solar"></a></div><nav class="sb-nav"><div class="nav-sec">Geral</div><a class="nav-item" href="home.html"><span class="ic"><iconify-icon icon="ion:grid-outline"></iconify-icon></span>Início</a><div class="nav-sec">Módulos</div><a class="nav-item" href="movimentacoes.html"><span class="ic"><iconify-icon icon="ion:wallet-outline"></iconify-icon></span>Movimentações<span class="badge">3</span></a><a class="nav-item active" href="agendamentos.html"><span class="ic"><iconify-icon icon="ion:calendar-outline"></iconify-icon></span>Agendamentos</a><a class="nav-item" href="relatorios.html"><span class="ic"><iconify-icon icon="ion:bar-chart-outline"></iconify-icon></span>Relatórios</a><a class="nav-item" href="comparativo.html"><span class="ic"><iconify-icon icon="ion:trending-up-outline"></iconify-icon></span>Comparativo</a><a class="nav-item" href="evolucao.html"><span class="ic"><iconify-icon icon="ion:analytics-outline"></iconify-icon></span>Evolução</a><div class="nav-sec">Gestão</div><a class="nav-item" href="colaboradores.html"><span class="ic"><iconify-icon icon="ion:people-outline"></iconify-icon></span>Colaboradores</a><a class="nav-item" href="dias-trabalhados.html"><span class="ic"><iconify-icon icon="ion:calendar-number-outline"></iconify-icon></span>Dias trabalhados</a><a class="nav-item" href="projetos.html"><span class="ic"><iconify-icon icon="ion:construct-outline"></iconify-icon></span>Projetos</a></nav></aside><nav class="mtabs" aria-label="Navegação"><a class="mtab" href="home.html"><span class="mti"><iconify-icon icon="ion:grid-outline"></iconify-icon></span><span class="mtl">Início</span></a><a class="mtab" href="movimentacoes.html"><span class="mti"><iconify-icon icon="ion:wallet-outline"></iconify-icon></span><span class="mtl">Financeiro</span></a><a class="mtab active" href="agendamentos.html"><span class="mti"><iconify-icon icon="ion:calendar-outline"></iconify-icon></span><span class="mtl">Agenda</span></a><a class="mtab" href="relatorios.html"><span class="mti"><iconify-icon icon="ion:bar-chart-outline"></iconify-icon></span><span class="mtl">Relatórios</span></a></nav><script src="js/agenda-2.init.js" defer></script>
+  <div class="main">
+  
+    <header class="topbar">
+      <button class="icon-btn menu-btn" aria-label="Menu"><iconify-icon icon="ion:menu-outline"></iconify-icon></button>
+      <div class="ptitle">Agendamentos</div>
+      <div class="spacer"></div>
+      <button class="icon-btn theme-btn" id="theme-btn" aria-label="Alternar tema"><iconify-icon icon="ion:moon-outline"></iconify-icon></button>
+      <button class="icon-btn bell" aria-label="Notificações"><iconify-icon icon="ion:notifications-outline"></iconify-icon></button>
+      <button class="pf-btn" id="pf-btn" aria-label="Perfil"><span class="pf-av">RD</span></button>
+      <span class="brand-top"><img class="atom" src="img/atom-dark.png" alt="JC"></span>
+    </header>
+    <div class="content va">
+      <div class="page-head">
+        <div><h1>Agendamentos</h1><p>Serviços e visitas que você marcou</p></div>
+        <div class="ph-actions">
+          <button class="btn btn-primary" id="btn-novo-ag"><iconify-icon icon="ion:add-outline"></iconify-icon> Novo agendamento</button>
+        </div>
+      </div>
+      <div class="ag-stats" id="ag-stats"></div>
+      <div class="ag-grid">
+        <section class="cal-card card" data-view="week">
+          <div class="cal-head">
+            <b>Julho 2026</b>
+            <div class="agtools"><button class="icon-btn sm"><iconify-icon icon="ion:chevron-back-outline"></iconify-icon></button><button class="icon-btn sm"><iconify-icon icon="ion:chevron-forward-outline"></iconify-icon></button></div>
+          </div>
+          <div class="calview">
+            <button class="cv-btn on" data-v="week"><iconify-icon icon="ion:calendar-outline"></iconify-icon> Semana</button>
+            <button class="cv-btn" data-v="month"><iconify-icon icon="ion:calendar-outline"></iconify-icon> Mês</button>
+          </div>
+          <div class="weekstrip"><button class="wday" data-d="19"><small>DOM</small><b>19</b></button><button class="wday" data-d="20"><small>SEG</small><b>20</b></button><button class="wday" data-d="21"><small>TER</small><b>21</b></button><button class="wday sel" data-d="22"><small>QUA</small><b>22</b><span class="wdot wait"></span></button><button class="wday" data-d="23"><small>QUI</small><b>23</b><span class="wdot wait"></span></button><button class="wday" data-d="24"><small>SEX</small><b>24</b><span class="wdot ok"></span></button><button class="wday" data-d="25"><small>SAB</small><b>25</b></button></div>
+          <div class="cal"><span class="cah">D</span><span class="cah">S</span><span class="cah">T</span><span class="cah">Q</span><span class="cah">Q</span><span class="cah">S</span><span class="cah">S</span><span class="cd mut"></span><span class="cd mut"></span><span class="cd mut"></span><span class="cd" data-d="1">1</span><span class="cd" data-d="2">2</span><span class="cd" data-d="3">3</span><span class="cd" data-d="4">4</span><span class="cd" data-d="5">5</span><span class="cd" data-d="6">6</span><span class="cd" data-d="7">7</span><span class="cd" data-d="8">8</span><span class="cd" data-d="9">9</span><span class="cd" data-d="10">10</span><span class="cd" data-d="11">11</span><span class="cd" data-d="12">12</span><span class="cd" data-d="13">13</span><span class="cd" data-d="14">14</span><span class="cd" data-d="15">15</span><span class="cd" data-d="16">16</span><span class="cd" data-d="17">17</span><span class="cd" data-d="18">18</span><span class="cd" data-d="19">19</span><span class="cd" data-d="20">20</span><span class="cd" data-d="21">21</span><span class="cd sel" data-d="22">22<span class="cdot wait"></span></span><span class="cd has" data-d="23">23<span class="cdot wait"></span></span><span class="cd has" data-d="24">24<span class="cdot ok"></span></span><span class="cd" data-d="25">25</span><span class="cd has" data-d="26">26<span class="cdot ok"></span></span><span class="cd" data-d="27">27</span><span class="cd" data-d="28">28</span><span class="cd" data-d="29">29</span><span class="cd" data-d="30">30</span><span class="cd" data-d="31">31</span><span class="cd mut"></span></div>
+          <div class="cal-legend"><span class="lg"><i class="ok"></i> Confirmado</span><span class="lg"><i class="wait"></i> Pendente</span></div>
+        </section>
+        <section class="agenda-card card">
+          <div class="ag-dayhead"><div><b>Quarta, 22 de julho</b><small>3 serviços agendados</small></div><span class="ag-total">R$ 15.250,00</span></div>
+          <div class="agenda-list"><div class="appt"><div class="appt-time"><b>09:00</b><small>2h</small></div><span class="appt-dot ok"></span><div class="appt-card"><div class="appt-top"><b>Instalação de painéis solares</b><div class="appt-badges"><span class="apt-b ok">Confirmado</span></div></div><div class="appt-sub"><iconify-icon icon="ion:location-outline"></iconify-icon><span>Condomínio Vila Verde</span></div><div class="appt-foot"><span class="appt-team"><span class="av b">CA</span>Carlos Lima</span><span class="appt-val">R$ 12.500,00</span></div></div></div><div class="appt"><div class="appt-time"><b>11:00</b><small>1h30</small></div><span class="appt-dot wait"></span><div class="appt-card"><div class="appt-top"><b>Manutenção elétrica predial</b><div class="appt-badges"><span class="apt-b wait">Pendente</span></div></div><div class="appt-sub"><iconify-icon icon="ion:location-outline"></iconify-icon><span>Mercado São José</span></div><div class="appt-foot"><span class="appt-team"><span class="av d">JO</span>João Pedro</span><span class="appt-val">R$ 1.850,00</span></div></div></div><div class="appt"><div class="appt-time"><b>14:00</b><small>1h</small></div><span class="appt-dot ok"></span><div class="appt-card"><div class="appt-top"><b>Vistoria de geração solar</b><div class="appt-badges"><span class="apt-b ok">Confirmado</span></div></div><div class="appt-sub"><iconify-icon icon="ion:location-outline"></iconify-icon><span>Padaria Pão Quente</span></div><div class="appt-foot"><span class="appt-team"><span class="av a">MA</span>Maria Souza</span><span class="appt-val">R$ 900,00</span></div></div></div></div>
+        </section>
+      </div>
+
+      <section class="dash">
+        <div class="dash-head"><h3>Resumo dos serviços marcados</h3><span class="live-badge"><i></i> ao vivo</span></div>
+        <div class="dash-kpis" id="ag-kpis"></div>
+        <div class="dash-grid">
+          <div class="dp card"><h4>Serviços por dia da semana</h4><div class="dp-sub">carga de trabalho da equipe</div><div id="ch-dias" class="chart"></div></div>
+          <div class="dp card"><h4>Situação</h4><div class="dp-sub">confirmados x pendentes</div><div id="ch-sit" class="chart"></div></div>
+          <div class="dp card span-all"><h4>Receita por técnico</h4><div class="dp-sub">estimativa agendada</div>
+            <div class="rbars" id="ag-receita-tec"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<script src="js/agenda.js" defer></script>
+<script src="js/pwa.js" defer></script><script src="js/wizard.js" defer></script><script src="js/logout.js" defer></script><script src="js/profile.js" defer></script><script src="js/notificacoes.js" defer></script><script src="js/tema.js" defer></script><script src="js/som.js" defer></script><script src="js/modais.js" defer></script><script src="js/arrastar.js" defer></script><script src="js/toasts.js" defer></script><script src="js/mascara.js" defer></script><script src="js/puxar.js" defer></script><script src="js/esqueleto.js" defer></script><script src="js/push.js" defer></script></body></html>

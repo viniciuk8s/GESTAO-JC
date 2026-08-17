@@ -1,0 +1,209 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Central de notificações (sino do header + painel)
+//  Alimentada por notif.web.js / GET /api/notificacoes
+// ============================================================
+
+// ---- contador no sino -------------------------------------------------------
+.bell { position: relative; }
+.notif-badge {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 800;
+  font-family: var(--font-head);
+  line-height: 17px;
+  text-align: center;
+  border: 2px solid var(--topbar, #0c0e13);
+  box-shadow: none;
+  pointer-events: none;
+
+  &.crit {
+    background: linear-gradient(180deg, #fb7185, #ef4444);
+    box-shadow: 0 2px 8px -2px rgba(239, 68, 68, .85);
+    animation: none;
+  }
+}
+@keyframes notif-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(239, 68, 68, .5); }
+  70%  { box-shadow: 0 0 0 7px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+.bell.on { background: var(--card-2); }
+
+// ---- painel -----------------------------------------------------------------
+.notif-pop {
+  position: fixed;
+  top: 58px;
+  right: 14px;
+  z-index: 60;
+  width: 370px;
+  max-width: calc(100vw - 20px);
+  max-height: min(70vh, 560px);
+  display: flex;
+  flex-direction: column;
+  background: var(--panel, #12141b);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px -18px rgba(0, 0, 0, .85), 0 0 0 1px rgba(255, 255, 255, .03) inset;
+  overflow: hidden;
+  animation: notif-in .18s cubic-bezier(.22, 1, .36, 1) both;
+
+  &[hidden] { display: none; }
+}
+@keyframes notif-in { from { opacity: 0; transform: translateY(-8px) scale(.98); } to { opacity: 1; transform: none; } }
+
+.notif-head {
+  @include flex-center(8px);
+  justify-content: space-between;
+  padding: 12px 14px 12px 16px;
+  border-bottom: 1px solid var(--line);
+
+  b { font-family: var(--font-head); font-size: 15px; font-weight: 800; }
+  .notif-head-r { @include flex-center(10px); }
+  .notif-count-lbl { color: var(--dim); font-size: 12px; font-weight: 600; white-space: nowrap; }
+}
+.notif-read-all {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--mut);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .15s, border-color .15s, background-color .15s;
+
+  &:hover { color: var(--txt); border-color: rgba(255, 255, 255, .18); background: var(--card-2); }
+  &[hidden] { display: none; }
+}
+
+.notif-list { overflow-y: auto; padding: 6px; }
+
+.notif-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 8px 11px 10px;
+  border-radius: 12px;
+  color: var(--txt);
+  text-decoration: none;
+  position: relative;
+  cursor: pointer;
+  transition: background-color .15s ease, transform .15s ease, opacity .15s ease;
+
+  &::before { // faixa de severidade à esquerda
+    content: "";
+    position: absolute;
+    left: 2px; top: 12px; bottom: 12px;
+    width: 3px; border-radius: 3px;
+    background: var(--slate);
+  }
+  &.sev-critico::before { background: var(--neg); }
+  &.sev-atencao::before { background: var(--amber); }
+  &.sev-info::before   { background: var(--blue); }
+
+  &:hover { background: var(--card-2); transform: translateX(2px); }
+  &:focus-visible { outline: 2px solid var(--accent-2); outline-offset: -2px; }
+  & + .notif-item { margin-top: 2px; }
+
+  // lida: esmaecida e sem negrito (mantém a faixa de severidade)
+  &.lida {
+    opacity: .55;
+    .notif-main b { font-weight: 600; color: var(--mut); }
+    .notif-when { color: var(--dim) !important; }
+  }
+  // não lida: pontinho de destaque antes do título
+  &:not(.lida) .notif-main b::before {
+    content: "";
+    display: inline-block;
+    width: 6px; height: 6px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    vertical-align: middle;
+  }
+}
+
+// botão dispensar (X)
+.notif-x {
+  @include box(26px, 8px);
+  @include icon(15px);
+  border: 0;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+  opacity: .5;
+  transition: opacity .15s, background-color .15s, color .15s;
+
+  &:hover { opacity: 1; color: var(--neg); background: rgba(248, 113, 113, .12); }
+  &:focus-visible { opacity: 1; outline: 2px solid var(--accent-2); outline-offset: 2px; }
+}
+
+.notif-ic {
+  @include box(36px, 10px);
+  @include icon(18px);
+  background: rgba(255, 255, 255, .05);
+  color: var(--mut);
+
+  &.critico { background: rgba(248, 113, 113, .14); color: var(--neg); }
+  &.atencao { background: rgba(251, 191, 36, .14); color: var(--amber); }
+  &.info    { background: rgba(91, 141, 239, .14); color: var(--blue); }
+}
+
+.notif-main {
+  min-width: 0;
+  b { display: block; font-size: 13.5px; font-weight: 700; @include ellipsis; }
+  small { display: block; color: var(--dim); font-size: 12px; @include ellipsis; margin-top: 1px; }
+}
+
+.notif-meta {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  white-space: nowrap;
+
+  .notif-when {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--dim);
+    &.critico { color: var(--neg); }
+    &.atencao { color: var(--amber); }
+  }
+  .notif-val { font-size: 12.5px; font-weight: 700; color: var(--txt); }
+}
+
+.notif-empty {
+  text-align: center;
+  color: var(--mut);
+  padding: 34px 16px 40px;
+
+  iconify-icon { font-size: 30px; color: var(--pos); display: block; margin: 0 auto 8px; }
+  b { display: block; color: var(--txt); font-weight: 700; }
+  small { color: var(--dim); }
+}
+
+@media (max-width: 640px) {
+  .notif-pop { top: 54px; right: 8px; left: 8px; width: auto; }
+}
+
+// Ícones do header SEM fundo/borda — só os ícones (menu, tema, sino).
+.topbar .icon-btn, .bell {
+  background: transparent !important;
+  border-color: transparent !important;
+}
+.topbar .icon-btn:active, .bell.on, .bell:active { background: transparent !important; }

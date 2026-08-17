@@ -1,0 +1,250 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/tokens' as *;
+
+// ============================================================
+//  Sistema visual "SAS Visual Analytics" (mobile-first)
+//  Marca JC (dark + laranja). Escopado em .content.va → só as
+//  telas marcadas com `va` adotam o dashboard de tiles.
+// ============================================================
+
+// Badge "ao vivo"
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--pos);
+  background: rgba(52, 211, 153, .12);
+  border: 1px solid rgba(52, 211, 153, .24);
+  padding: 6px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+
+  i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--pos);
+    animation: none;
+  }
+}
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(52, 211, 153, .55); }
+  70%  { box-shadow: 0 0 0 9px rgba(52, 211, 153, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+
+.va {
+  padding-bottom: 92px; // folga p/ o FAB não cobrir o último tile (mobile)
+
+  // Blocos existentes (.card/.panel) já ganham a cara de tile no modo VA
+  .card, .panel {
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-card);
+  }
+
+  // ---- Report tile (bloco do dashboard) — cantos quase retos, respiro, sombra fina ----
+  .tile {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    animation: tile-in .4s ease both;
+  }
+
+  .tile-h {
+    @include flex-center(10px);
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 12px;
+  }
+
+  .tile-meta {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--mut);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  // ---- Hero (headline KPI + gráfico) ----
+  .hero-tile {
+    background: var(--card-2);
+    padding: 24px 24px 14px;
+  }
+
+  .hero-top {
+    @include flex-center(10px);
+    justify-content: space-between;
+  }
+
+  .hero-val {
+    font-family: var(--font-head);
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin: 8px 0 4px;
+    background: var(--grad-txt);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: opacity .3s;
+  }
+
+  .hero-sub { color: var(--mut); font-size: 12.5px; font-weight: 600; }
+  .hero-chart { margin: 6px -10px -6px; min-height: 120px; }
+
+  // ---- KPI tiles (sumcards) ----
+  .sumrow { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+  .sumcard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 18px;
+    border-radius: var(--r-card);
+
+    .si { width: 38px; height: 38px; @include icon(19px); }
+    .sc-info { width: 100%; }
+
+    small {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--dim);
+      font-weight: 700;
+    }
+
+    b { font-size: 19px; }
+  }
+
+  // ---- Grades ----
+  .va-grid2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .chart-box { min-height: 200px; display: grid; place-items: center; }
+
+  .dash-kpis { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .dk {
+    border-radius: var(--r-card);
+    border: 1px solid var(--line);
+    background: var(--card);
+    box-shadow: var(--shadow-card);
+  }
+
+  // ---- Lista/CRUD dentro de tile ----
+  .list-tile {
+    .filters { margin-bottom: 4px; }
+    > section { margin-top: 4px; }
+  }
+}
+
+// Barra de cadência (~5s, loop) — sensação de "ao vivo"
+.refresh-bar {
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, .06);
+  overflow: hidden;
+  margin-top: 2px;
+
+  &::after {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: var(--accent);
+    transform-origin: left;
+    animation: refill 5s linear infinite;
+  }
+}
+@keyframes refill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes tile-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+// Contexto do gauge (2 números)
+.gauge-sub {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+
+  div {
+    flex: 1;
+    text-align: center;
+    padding: 9px 8px;
+    border-radius: 10px;
+    background: var(--chip);
+    border: 1px solid var(--line);
+  }
+
+  small {
+    display: block;
+    color: var(--dim);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 2px;
+  }
+
+  b { font-family: var(--font-head); font-size: 15px; font-weight: 800; }
+}
+
+// Legenda (donut / treemap): item · valor · %
+.donut-leg { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.leg-row { @include flex-center(9px); font-size: 12px; }
+.leg-dot { width: 9px; height: 9px; border-radius: 3px; flex: 0 0 auto; }
+.leg-name { flex: 1; min-width: 0; color: var(--txt); font-weight: 600; @include ellipsis; }
+.leg-val { font-family: var(--font-head); font-weight: 800; font-size: 12px; color: var(--txt); }
+.leg-pct { color: var(--mut); font-weight: 700; font-size: 11px; min-width: 36px; text-align: right; }
+
+// FAB (ação principal da tela)
+.fab {
+  position: fixed;
+  right: 18px;
+  bottom: 20px;
+  z-index: 60;
+  width: 58px;
+  height: 58px;
+  border-radius: 19px;
+  border: 0;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: none;
+  transition: transform .12s;
+
+  svg, iconify-icon { width: 25px; height: 25px; }
+  &:active { transform: scale(.93); }
+}
+
+// ---- Desktop ----
+@include up {
+  .va {
+    padding-bottom: 40px;
+
+    .hero-tile {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      align-items: center;
+      gap: 14px;
+      padding: 26px;
+    }
+    .hero-chart { margin: 0 -6px; min-height: 150px; }
+    .sumrow { grid-template-columns: repeat(4, 1fr); }
+    .dash-kpis { grid-template-columns: repeat(4, 1fr); }
+    .va-grid2 { grid-template-columns: 1fr 1fr; }
+    .tile { transition: border-color .16s, box-shadow .16s, transform .16s; }
+    .tile:hover {
+      border-color: var(--line-2);
+    }
+  }
+  .fab { display: none; }
+}
