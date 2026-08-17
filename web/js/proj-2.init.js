@@ -1,1 +1,1 @@
-window.JC_API='https://https://gestao-jc.onrender.com';
+window.JC_API='https://gestao-jc.onrender.com';
