@@ -12,7 +12,7 @@ TOPBAR = """
       <div class="spacer"></div>
       <button class="icon-btn theme-btn" id="theme-btn" aria-label="Alternar tema"><iconify-icon icon="ion:moon-outline"></iconify-icon></button>
       <button class="icon-btn bell" aria-label="Notificações">__IC_bell__</button>
-      <button class="pf-btn" id="pf-btn" aria-label="Perfil"><span class="pf-av"></span></button>
+      <button class="pf-btn" id="pf-btn" aria-label="Perfil"><span class="pf-av"></span><i class="bi bi-person"></i></button>
       <span class="brand-top"><img class="atom" src="__ATOM__" alt="JC"></span>
     </header>"""
 
